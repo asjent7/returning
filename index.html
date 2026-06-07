@@ -696,6 +696,29 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
   <div class="modal" id="modal-inner">
     <div class="modal-hdr"><div class="modal-title" id="modal-title">Secure Your Spot</div><button class="modal-x" onclick="closeModal()">&#215;</button></div>
     <div class="modal-sum" id="modal-sum"></div>
+    <div id="co-wrap" style="display:none;padding:10px 20px 14px;border-bottom:1px solid var(--border)">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Choose your payment structure</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div id="co-A" onclick="selectCo('A')" style="cursor:pointer;border:1px solid var(--border);background:var(--black3);border-radius:var(--rs);padding:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--white);margin-bottom:3px">Pay Deposits Now</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5">Pay remaining deposits at start. Equal monthly payments after.</div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">Due today (July 1)</div>
+          <div style="font-size:15px;font-weight:700;color:var(--gold);font-family:var(--mono);margin-bottom:6px" id="co-A-dep">—</div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">Then</div>
+          <div style="font-size:12px;font-weight:600;color:var(--white);font-family:var(--mono)" id="co-A-mo">—</div>
+        </div>
+        <div id="co-B" onclick="selectCo('B')" style="cursor:pointer;border:1px solid var(--border);background:var(--black3);border-radius:var(--rs);padding:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--white);margin-bottom:3px">Start Fresh July 1</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5">No charge today. Deposits folded into equal monthly payments.</div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">Due today</div>
+          <div style="font-size:15px;font-weight:700;color:var(--gold);font-family:var(--mono);margin-bottom:6px">$0.00</div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">First payment July 1</div>
+          <div style="font-size:12px;font-weight:600;color:var(--white);font-family:var(--mono);margin-bottom:4px" id="co-B-first">—</div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">Then</div>
+          <div style="font-size:12px;font-weight:600;color:var(--white);font-family:var(--mono)" id="co-B-mo">—</div>
+        </div>
+      </div>
+    </div>
     <div class="modal-form" style="padding:12px 20px 20px">
       <button id="stripe-btn" onclick="secureSpot()" style="width:100%;padding:16px;background:var(--gold);color:var(--black);font-size:15px;font-weight:700;border:none;border-radius:var(--rs);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--sf);transition:background .15s">
         <span id="stripe-btn-text">Set Up My Payment Plan</span>
@@ -1177,13 +1200,10 @@ function calcAndRender(){
       var remainingAfterAll=Math.max(0,t.grand-totalCredits);
       var moAdj=MOS[plan]>0?remainingAfterAll/MOS[plan]:remainingAfterAll;
       payRows+='<div class="r-row r-sub"><span class="rl">Deposits already paid ('+depsPaid+' × $197) ✓</span><span class="rv" style="color:#81c784">−'+fmt(existingDeposit)+'</span></div>';
-      if(depsStillNeeded>0){
-        payRows+='<div class="r-row r-sub"><span class="rl">Additional deposits ('+depsStillNeeded+' × $197) — due at checkout</span><span class="rv" style="color:#81c784">−'+fmt(addlDepTotal)+'</span></div>';
-      } else {
-        payRows+='<div class="r-row r-sub"><span class="rl">All participant deposits covered ✓</span><span class="rv" style="color:#81c784">$0 due</span></div>';
-      }
-      payRows+='<div class="r-row r-total" style="margin-top:4px"><span class="rl" style="font-size:13px;color:var(--gold)">Balance after all deposits</span><span class="rv" style="font-size:16px">'+fmt(remainingAfterAll)+'</span></div>';
-      payRows+='<div class="r-row r-mo"><span class="rl">Monthly payment × '+MOS[plan]+' months</span><span class="rv">'+fmt(moAdj)+'/mo</span></div>';
+      var remB_est=Math.max(0,t.grand-existingDeposit);
+      var moB_est=MOS[plan]>0?Math.round(remB_est/MOS[plan]*100)/100:remB_est;
+      payRows+='<div class="r-row r-total" style="margin-top:4px"><span class="rl" style="font-size:13px;color:var(--gold)">Remaining balance</span><span class="rv" style="font-size:16px">'+fmt(remB_est)+'</span></div>';
+      payRows+='<div class="r-row r-mo"><span class="rl">Monthly payment × '+MOS[plan]+' months</span><span class="rv">'+fmt(moB_est)+'/mo</span></div>';
     } else {
       payRows+='<div class="r-row r-sub"><span class="rl">Performer deposit due now ('+fmt(DEPS[plan])+(t.perfCount>1?' × '+t.perfCount:'')+') — holds cast spot</span><span class="rv">'+fmt(t.dep)+'</span></div>';
       payRows+='<div class="r-row r-total" style="margin-top:4px"><span class="rl" style="font-size:13px;color:var(--gold)">Balance after deposit</span><span class="rv" style="font-size:16px">'+fmt(t.remaining)+'</span></div>';
@@ -1343,13 +1363,10 @@ function buildStep3(rooms){
       var remain_s3=Math.max(0,t.grand-totalC_s3);
       var mo_s3=MOS[plan]>0?Math.round(remain_s3/MOS[plan]*100)/100:remain_s3;
       payRows+='<div class="r-row r-sub"><span class="rl">Deposits already paid ('+depsPaid_s3+' × $197) ✓</span><span class="rv" style="color:#81c784">−'+fmt(existingDeposit)+'</span></div>';
-      if(depsStillNeeded_s3>0){
-        payRows+='<div class="r-row r-sub"><span class="rl">Additional deposits ('+depsStillNeeded_s3+' × $197) — due at checkout</span><span class="rv" style="color:#81c784">−'+fmt(addlD_s3)+'</span></div>';
-      } else {
-        payRows+='<div class="r-row r-sub"><span class="rl">All participant deposits covered ✓</span><span class="rv" style="color:#81c784">$0 due</span></div>';
-      }
-      payRows+='<div class="r-row r-total" style="margin-top:4px"><span class="rl" style="font-size:13px;color:var(--gold)">Balance after all deposits</span><span class="rv" style="font-size:16px">'+fmt(remain_s3)+'</span></div>';
-      payRows+='<div class="r-row r-mo"><span class="rl">Monthly payment × '+MOS[plan]+' months</span><span class="rv">'+fmt(mo_s3)+'/mo</span></div>';
+      var remB_s3=Math.max(0,t.grand-existingDeposit);
+      var moB_s3=MOS[plan]>0?Math.round(remB_s3/MOS[plan]*100)/100:remB_s3;
+      payRows+='<div class="r-row r-total" style="margin-top:4px"><span class="rl" style="font-size:13px;color:var(--gold)">Remaining balance</span><span class="rv" style="font-size:16px">'+fmt(remB_s3)+'</span></div>';
+      payRows+='<div class="r-row r-mo"><span class="rl">Monthly payment × '+MOS[plan]+' months</span><span class="rv">'+fmt(moB_s3)+'/mo</span></div>';
     } else {
       payRows+='<div class="r-row r-sub"><span class="rl">Performer deposit due now ('+fmt(DEPS[plan])+(t.perfCount>1?' × '+t.perfCount:'')+') — holds cast spot</span><span class="rv">'+fmt(t.dep)+'</span></div>';
       payRows+='<div class="r-row r-mo"><span class="rl">Monthly payment × '+MOS[plan]+' months</span><span class="rv">'+fmt(t.mo)+'/mo</span></div>';
@@ -1381,23 +1398,55 @@ function buildStep3(rooms){
   var totalCreds3=isReturning?existingDeposit+addlDeps3:t.dep;
   var remainAdj3=Math.max(0,t.grand-totalCreds3);
   var moAdj3=MOS[plan]>0?Math.round(remainAdj3/MOS[plan]*100)/100:remainAdj3;
-  window._step3={grand:t.grand,dep:t.dep,remaining:t.remaining,mo:isReturning?moAdj3:t.mo,plan:plan,perfCount:t.perfCount,planLabel:planLabels[plan],participants:allParts3,addlDeps:addlDeps3,adjMonthly:moAdj3,remainAfterAll:remainAdj3};
+  var remB3=Math.max(0,t.grand-existingDeposit);
+  var moB3=MOS[plan]>0?Math.round(remB3/MOS[plan]*100)/100:remB3;
+  window._step3={grand:t.grand,dep:t.dep,remaining:t.remaining,mo:isReturning?moB3:t.mo,plan:plan,perfCount:t.perfCount,planLabel:planLabels[plan],participants:allParts3,addlDeps:addlDeps3};
   document.getElementById('step3-content').innerHTML='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Trip Summary</span><span class="res-hdr-r">'+planLabels[plan]+'</span></div><div class="res-body">'+rows+'<div class="r-row r-total"><span class="rl">Total Trip Investment</span><span class="rv">'+fmt(t.grand)+'</span></div>'+payRows+'</div>'+depNote+'</div><div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Participant Roster</span></div><div class="res-body" style="padding-top:6px;padding-bottom:6px">'+roster+'</div></div>';
+}
+
+var selectedCoOption='B';
+function selectCo(opt){
+  selectedCoOption=opt;
+  var active='cursor:pointer;border:1.5px solid var(--gold);background:var(--gold-dim);border-radius:var(--rs);padding:12px;';
+  var inactive='cursor:pointer;border:1px solid var(--border);background:var(--black3);border-radius:var(--rs);padding:12px;';
+  var cA=document.getElementById('co-A');var cB=document.getElementById('co-B');
+  if(cA) cA.style.cssText=opt==='A'?active:inactive;
+  if(cB) cB.style.cssText=opt==='B'?active:inactive;
 }
 
 function openModal(){
   var s=window._step3;if(!s)return;
   var r='<div class="ms-row"><span class="ml">Tour</span><span class="mv">ADX Broadway 2027 · CYT Houston</span></div><div class="ms-row"><span class="ml">Dates</span><span class="mv">June 18–22, 2027</span></div><div class="ms-row"><span class="ml">Payment plan</span><span class="mv">'+s.planLabel+'</span></div><div class="ms-row"><span class="ml">Total trip investment</span><span class="mv">'+fmt(s.grand)+'</span></div>';
   if(isReturning){
-    var remainBal=Math.max(0,s.grand-existingDeposit);
-    var moRet=MOS[s.plan]>0?Math.round(remainBal/MOS[s.plan]*100)/100:remainBal;
-    r+='<div class="ms-row"><span class="ml">Remaining balance after deposits</span><span class="mv">'+fmt(remainBal)+'</span></div>';
-    if(s.plan!=='full'&&moRet>0) r+='<div class="ms-row ms-tot"><span class="ml">Monthly payment × '+MOS[s.plan]+' starting July 1</span><span class="mv">'+fmt(moRet)+'/mo</span></div>';
+    r+='<div class="ms-row"><span class="ml">Deposits already paid</span><span class="mv" style="color:#81c784">'+fmt(existingDeposit)+'</span></div>';
   } else {
     if(s.plan!=='full'&&s.mo>0) r+='<div class="ms-row"><span class="ml">Monthly payment × '+MOS[s.plan]+'</span><span class="mv">'+fmt(s.mo)+'/mo</span></div>';
     if(s.perfCount>0) r+='<div class="ms-row ms-tot"><span class="ml">Performer deposit due today</span><span class="mv">'+fmt(s.dep)+'</span></div>';
   }
   document.getElementById('modal-sum').innerHTML=r;
+  // Co-wrap for returning registrants with outstanding deposits
+  var coWrap=document.getElementById('co-wrap');
+  if(isReturning&&s.plan!=='full'){
+    var addlDep=s.addlDeps||0;
+    if(addlDep>0){
+      var nMos=MOS[s.plan];
+      var remainA=Math.max(0,s.grand-existingDeposit-addlDep);
+      var moA=nMos>0?Math.round(remainA/nMos*100)/100:remainA;
+      var remainB=Math.max(0,s.grand-existingDeposit);
+      var moB=nMos>0?Math.round(remainB/nMos*100)/100:remainB;
+      document.getElementById('co-A-dep').textContent=fmt(addlDep);
+      document.getElementById('co-A-mo').textContent=fmt(moA)+'/mo × '+nMos+' starting July 1';
+      document.getElementById('co-B-first').textContent=fmt(moB);
+      document.getElementById('co-B-mo').textContent=fmt(moB)+'/mo × '+(nMos>1?nMos-1:nMos)+' more';
+      if(coWrap) coWrap.style.display='block';
+      selectCo(selectedCoOption||'B');
+    } else {
+      if(coWrap) coWrap.style.display='none';
+      selectedCoOption='B';
+    }
+  } else {
+    if(coWrap) coWrap.style.display='none';
+  }
   // Dynamic title and note
   var titleEl=document.getElementById('modal-title');
   var noteEl=document.getElementById('modal-note');
@@ -1410,7 +1459,7 @@ function openModal(){
     if(btnEl) btnEl.textContent='🔒 Pay in Full — '+fmt(s.grand);
   } else {
     if(titleEl) titleEl.textContent=isReturning?'Set Up Your Payment Plan':'Secure Your Spot — '+fmt(s.dep)+' Deposit';
-    if(noteEl) noteEl.textContent=isReturning?'No charge today — your remaining balance will be divided equally across '+MOS[s.plan]+' monthly payments beginning July 1, 2026.':'Deposits are refundable up to 30 days and secures your spot on ADX Broadway 2027 · You will be redirected to our secure payment page';
+    if(noteEl) noteEl.textContent=isReturning?'No charge today — your first payment begins July 1, 2026.':'Deposits are refundable up to 30 days and secures your spot on ADX Broadway 2027 · You will be redirected to our secure payment page';
     if(btnEl) btnEl.textContent=isReturning?'Set Up My Payment Plan':'🔒 Pay Deposit & Secure My Spot — '+fmt(s.dep);
   }
   // Reset button state
@@ -1467,7 +1516,8 @@ function secureSpot(){
     participants:participants,
     isReturning:isReturning,
     existingDeposit:isReturning?existingDeposit:0,
-    additionalDeposits:isReturning?nonPerfCount*197:0
+    additionalDeposits:isReturning?nonPerfCount*197:0,
+    checkoutOption:isReturning?selectedCoOption:'A'
   };
 
   var endpoint=isReturning?
