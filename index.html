@@ -1430,12 +1430,14 @@ function openModal(){
   var coWrap=document.getElementById('co-wrap');
   if(isReturning&&s.plan!=='full'){
     var addlDep=s.addlDeps||0;
+    var nMos=MOS[s.plan];
+    var remainB=Math.max(0,s.grand-existingDeposit);
+    var moB=nMos>0?Math.round(remainB/nMos*100)/100:remainB;
     if(addlDep>0){
-      var nMos=MOS[s.plan];
+      var cAEl=document.getElementById('co-A');
+      if(cAEl) cAEl.style.display='';
       var remainA=Math.max(0,s.grand-existingDeposit-addlDep);
       var moA=nMos>0?Math.round(remainA/nMos*100)/100:remainA;
-      var remainB=Math.max(0,s.grand-existingDeposit);
-      var moB=nMos>0?Math.round(remainB/nMos*100)/100:remainB;
       document.getElementById('co-A-dep').textContent=fmt(addlDep);
       document.getElementById('co-A-mo').textContent=fmt(moA)+'/mo × '+nMos+' starting July 1';
       document.getElementById('co-B-first').textContent=fmt(moB);
@@ -1443,8 +1445,13 @@ function openModal(){
       if(coWrap) coWrap.style.display='block';
       selectCo(selectedCoOption||'B');
     } else {
-      if(coWrap) coWrap.style.display='none';
+      var cAEl=document.getElementById('co-A');
+      if(cAEl) cAEl.style.display='none';
+      document.getElementById('co-B-first').textContent=fmt(moB);
+      document.getElementById('co-B-mo').textContent=fmt(moB)+'/mo × '+nMos;
+      if(coWrap) coWrap.style.display='block';
       selectedCoOption='B';
+      selectCo('B');
     }
   } else {
     if(coWrap) coWrap.style.display='none';
