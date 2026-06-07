@@ -702,7 +702,7 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
       </button>
       <div id="stripe-error" style="display:none;margin-top:12px;padding:10px 14px;background:rgba(211,47,47,.12);border:1px solid rgba(211,47,47,.3);border-radius:var(--rs);font-size:12px;color:#ef9a9a"></div>
     </div>
-    <div class="modal-note" id="modal-note">No charge today — your remaining deposits and initial payment are due July 1, 2026.</div>
+    <div class="modal-note" id="modal-note">No charge today — your remaining balance will be divided equally across monthly payments beginning July 1, 2026.</div>
   </div>
 </div>
 
@@ -1388,9 +1388,15 @@ function buildStep3(rooms){
 function openModal(){
   var s=window._step3;if(!s)return;
   var r='<div class="ms-row"><span class="ml">Tour</span><span class="mv">ADX Broadway 2027 · CYT Houston</span></div><div class="ms-row"><span class="ml">Dates</span><span class="mv">June 18–22, 2027</span></div><div class="ms-row"><span class="ml">Payment plan</span><span class="mv">'+s.planLabel+'</span></div><div class="ms-row"><span class="ml">Total trip investment</span><span class="mv">'+fmt(s.grand)+'</span></div>';
-  var displayMo=isReturning?(s.adjMonthly||s.mo):s.mo;
-  if(s.plan!=='full'&&displayMo>0) r+='<div class="ms-row"><span class="ml">Monthly payment × '+MOS[s.plan]+'</span><span class="mv">'+fmt(displayMo)+'/mo</span></div>';
-  if(s.perfCount>0) r+='<div class="ms-row ms-tot"><span class="ml">Performer deposit due today</span><span class="mv">'+fmt(s.dep)+'</span></div>';
+  if(isReturning){
+    var remainBal=Math.max(0,s.grand-existingDeposit);
+    var moRet=MOS[s.plan]>0?Math.round(remainBal/MOS[s.plan]*100)/100:remainBal;
+    r+='<div class="ms-row"><span class="ml">Remaining balance after deposits</span><span class="mv">'+fmt(remainBal)+'</span></div>';
+    if(s.plan!=='full'&&moRet>0) r+='<div class="ms-row ms-tot"><span class="ml">Monthly payment × '+MOS[s.plan]+' starting July 1</span><span class="mv">'+fmt(moRet)+'/mo</span></div>';
+  } else {
+    if(s.plan!=='full'&&s.mo>0) r+='<div class="ms-row"><span class="ml">Monthly payment × '+MOS[s.plan]+'</span><span class="mv">'+fmt(s.mo)+'/mo</span></div>';
+    if(s.perfCount>0) r+='<div class="ms-row ms-tot"><span class="ml">Performer deposit due today</span><span class="mv">'+fmt(s.dep)+'</span></div>';
+  }
   document.getElementById('modal-sum').innerHTML=r;
   // Dynamic title and note
   var titleEl=document.getElementById('modal-title');
@@ -1404,7 +1410,7 @@ function openModal(){
     if(btnEl) btnEl.textContent='🔒 Pay in Full — '+fmt(s.grand);
   } else {
     if(titleEl) titleEl.textContent=isReturning?'Set Up Your Payment Plan':'Secure Your Spot — '+fmt(s.dep)+' Deposit';
-    if(noteEl) noteEl.textContent=isReturning?'No charge today — your remaining deposits and initial payment are due July 1, 2026.':'Deposits are refundable up to 30 days and secures your spot on ADX Broadway 2027 · You will be redirected to our secure payment page';
+    if(noteEl) noteEl.textContent=isReturning?'No charge today — your remaining balance will be divided equally across '+MOS[s.plan]+' monthly payments beginning July 1, 2026.':'Deposits are refundable up to 30 days and secures your spot on ADX Broadway 2027 · You will be redirected to our secure payment page';
     if(btnEl) btnEl.textContent=isReturning?'Set Up My Payment Plan':'🔒 Pay Deposit & Secure My Spot — '+fmt(s.dep);
   }
   // Reset button state
