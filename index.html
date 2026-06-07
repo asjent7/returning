@@ -308,16 +308,6 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
 .ret-title{font-size:14px;font-weight:700;color:var(--green-tx);margin-bottom:3px}
 .ret-note{color:var(--muted)}
 .ret-credit{display:inline-block;margin-top:6px;padding:4px 10px;background:rgba(46,125,50,.2);border:1px solid var(--green-bd);border-radius:99px;font-size:12px;font-weight:700;color:var(--green-tx)}
-/* Checkout option cards */
-.co-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px 20px}
-.co-card{border:1.5px solid var(--border);border-radius:var(--rs);padding:14px;cursor:pointer;transition:all .15s;background:var(--black3)}
-.co-card:hover{border-color:var(--gold)}
-.co-card.selected{border-color:var(--gold);background:rgba(255,183,46,.07)}
-.co-card-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px}
-.co-card-sub{font-size:11px;color:var(--muted);line-height:1.5}
-.co-card-amt{font-size:14px;font-weight:700;color:var(--gold);margin-top:8px;font-family:var(--mono)}
-.co-note{padding:0 20px 14px;font-size:11px;color:var(--orange-tx);line-height:1.6;background:rgba(230,81,0,.06);border-top:1px solid var(--border)}
-@media(max-width:768px){.co-wrap{grid-template-columns:1fr}}
 
 </style>
 </head>
@@ -706,30 +696,13 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
   <div class="modal" id="modal-inner">
     <div class="modal-hdr"><div class="modal-title" id="modal-title">Secure Your Spot</div><button class="modal-x" onclick="closeModal()">&#215;</button></div>
     <div class="modal-sum" id="modal-sum"></div>
-    <!-- Returning registrant checkout options -->
-    <div id="co-section" style="display:none">
-      <div style="padding:14px 20px 10px;font-size:13px;font-weight:600;color:var(--white)">Choose your payment option:</div>
-      <div class="co-wrap">
-        <div class="co-card selected" id="co-a" onclick="selectCheckoutOption('A')">
-          <div class="co-card-title">Pay deposits now</div>
-          <div class="co-card-sub">Pay additional participant deposits today. Monthly installments begin July 1 — lower and equal each month.</div>
-          <div class="co-card-amt" id="co-a-amt">—</div>
-        </div>
-        <div class="co-card" id="co-b" onclick="selectCheckoutOption('B')">
-          <div class="co-card-title">Pay everything July 1</div>
-          <div class="co-card-sub">No charge today. First payment in July includes deposits + month 1 installment.</div>
-          <div class="co-card-amt" id="co-b-amt">—</div>
-        </div>
-      </div>
-      <div id="co-b-warning" class="co-note" style="display:none">⚠️ Your first payment in July will be higher than your regular monthly installment. Subsequent months will be lower and equal.</div>
-    </div>
     <div class="modal-form" style="padding:12px 20px 20px">
       <button id="stripe-btn" onclick="secureSpot()" style="width:100%;padding:16px;background:var(--gold);color:var(--black);font-size:15px;font-weight:700;border:none;border-radius:var(--rs);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--sf);transition:background .15s">
-        <span id="stripe-btn-text">🔒 Pay Deposit &amp; Secure My Spot</span>
+        <span id="stripe-btn-text">Set Up My Payment Plan</span>
       </button>
       <div id="stripe-error" style="display:none;margin-top:12px;padding:10px 14px;background:rgba(211,47,47,.12);border:1px solid rgba(211,47,47,.3);border-radius:var(--rs);font-size:12px;color:#ef9a9a"></div>
     </div>
-    <div class="modal-note" id="modal-note">Deposits are refundable up to 30 days and secures your spot on ADX Broadway 2027 · You will be redirected to our secure payment page</div>
+    <div class="modal-note" id="modal-note">No charge today — your remaining deposits and initial payment are due July 1, 2026.</div>
   </div>
 </div>
 
@@ -1431,28 +1404,9 @@ function openModal(){
     if(btnEl) btnEl.textContent='🔒 Pay in Full — '+fmt(s.grand);
   } else {
     if(titleEl) titleEl.textContent=isReturning?'Set Up Your Payment Plan':'Secure Your Spot — '+fmt(s.dep)+' Deposit';
-    if(noteEl) noteEl.textContent='Deposits are refundable up to 30 days and secures your spot on ADX Broadway 2027 · You will be redirected to our secure payment page';
-    if(btnEl) btnEl.textContent=isReturning?((s.addlDeps||0)>0?'🔒 Pay $'+(s.addlDeps).toFixed(2)+' Deposits Today — Installments Start July 1':'🔒 Set Up Payment Plan — Installments Start July 1'):'🔒 Pay Deposit & Secure My Spot — '+fmt(s.dep);
+    if(noteEl) noteEl.textContent=isReturning?'No charge today — your remaining deposits and initial payment are due July 1, 2026.':'Deposits are refundable up to 30 days and secures your spot on ADX Broadway 2027 · You will be redirected to our secure payment page';
+    if(btnEl) btnEl.textContent=isReturning?'Set Up My Payment Plan':'🔒 Pay Deposit & Secure My Spot — '+fmt(s.dep);
   }
-  // Returning registrant checkout options
-  var coSection=document.getElementById('co-section');
-  if(coSection){
-    coSection.style.display=isReturning?'block':'none';
-    if(isReturning){
-      // Calculate option amounts
-      var addlDeps=s.addlDeps||0;  // already correctly calculated in _step3
-      var adjMonthly=s.adjMonthly||s.mo||0;
-      var coAEl=document.getElementById('co-a-amt');
-      var coBEl=document.getElementById('co-b-amt');
-      var btnEl=document.getElementById('stripe-btn-text');
-      var optAToday=addlDeps>0?'$'+addlDeps.toFixed(2)+' today + $'+adjMonthly.toFixed(2)+'/mo from July 1':'$0 today + $'+adjMonthly.toFixed(2)+'/mo from July 1';
-      var optBFirst='$'+(addlDeps+adjMonthly).toFixed(2)+' July 1'+(addlDeps>0?' (deposits + month 1)':'')+', then $'+adjMonthly.toFixed(2)+'/mo';
-      if(coAEl) coAEl.textContent=optAToday;
-      if(coBEl) coBEl.textContent=optBFirst;
-      if(btnEl) btnEl.textContent=addlDeps>0?'🔒 Pay $'+addlDeps.toFixed(2)+' Deposits Today — Installments Start July 1':'🔒 Set Up Payment Plan — Installments Start July 1';
-    }
-  }
-  updateStripeBtn();
   // Reset button state
   var btn=document.getElementById('stripe-btn');
   if(btn){btn.disabled=false;btn.style.opacity='1';}
@@ -1507,7 +1461,6 @@ function secureSpot(){
     participants:participants,
     isReturning:isReturning,
     existingDeposit:isReturning?existingDeposit:0,
-    checkoutOption:isReturning?checkoutOption:'A',
     additionalDeposits:isReturning?nonPerfCount*197:0
   };
 
@@ -1535,39 +1488,11 @@ function secureSpot(){
   });
 }
 function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';}
-
-function selectCheckoutOption(opt){
-  checkoutOption=opt;
-  document.getElementById('co-a').classList.toggle('selected',opt==='A');
-  document.getElementById('co-b').classList.toggle('selected',opt==='B');
-  var warn=document.getElementById('co-b-warning');
-  if(warn) warn.style.display=opt==='B'?'block':'none';
-  updateStripeBtn();
-}
-
-function updateStripeBtn(){
-  var s=window._step3;if(!s)return;
-  var btnText=document.getElementById('stripe-btn-text');
-  if(!btnText)return;
-  if(isReturning){
-    var addlDeposits=s.addlDeps||0;
-    var adjMo=s.adjMonthly||s.mo||0;
-    if(checkoutOption==='A'){
-      btnText.textContent=addlDeposits>0?
-        '🔒 Pay $'+addlDeposits.toFixed(2)+' Deposits Today — Installments Start July 1':
-        '🔒 Set Up Payment Plan — Installments Start July 1';
-    } else {
-      var julyCharge=addlDeposits+adjMo;
-      btnText.textContent='🔒 First Payment July 1 — $'+julyCharge.toFixed(2);
-    }
-  }
-}
 function handleBdClick(e){if(e.target===document.getElementById('modal'))closeModal();}
 
 // INIT
 var isReturning=false;
 var existingDeposit=0;
-var checkoutOption='A'; // A=pay deposits now, B=pay everything July 1
 
 (function(){
   var params=new URLSearchParams(window.location.search);
@@ -1581,31 +1506,17 @@ var checkoutOption='A'; // A=pay deposits now, B=pay everything July 1
     var monthly=params.get('monthly')||'';
     var months=params.get('months')||'';
     var isRet=params.get('returning')==='1';
-    var coOpt=params.get('co')||'A';
     if(planLabel) document.getElementById('c-plan').textContent=decodeURIComponent(planLabel);
     if(monthly&&months&&months!=='0') document.getElementById('c-monthly').textContent='$'+parseFloat(monthly).toFixed(2)+'/mo × '+months+' months';
     else if(monthly==='0'||months==='0') document.getElementById('c-monthly').textContent='Paid in full';
     if(isRet){
       var depLabel=document.getElementById('c-deposit-label');
-      var firstRow=document.getElementById('c-first-row');
-      var firstEl=document.getElementById('c-first');
       var step2Title=document.getElementById('c-step2-title');
       var step2Body=document.getElementById('c-step2-body');
-      if(coOpt==='A'){
-        // Option A: paid deposits today
-        if(depLabel) depLabel.textContent='Additional Deposits Paid Today';
-        if(deposit) document.getElementById('c-deposit').textContent='$'+parseFloat(deposit).toFixed(2);
-        if(step2Title) step2Title.textContent='Monthly payments begin July 1';
-        if(step2Body) step2Body.textContent='Your Stripe subscription is active. Monthly installments will be automatically charged to your card on the 1st of each month starting July 1, 2026.';
-      } else {
-        // Option B: everything July 1
-        if(depLabel) depLabel.textContent='Due Today';
-        document.getElementById('c-deposit').textContent='$0.00';
-        if(firstRow) firstRow.style.display='flex';
-        if(firstEl&&deposit) firstEl.textContent='$'+parseFloat(deposit).toFixed(2)+' (deposits + month 1)';
-        if(step2Title) step2Title.textContent='First payment July 1';
-        if(step2Body) step2Body.textContent='Your first payment of $'+parseFloat(deposit).toFixed(2)+' will be charged on July 1, 2026. Regular monthly installments follow on the 1st of each subsequent month.';
-      }
+      if(depLabel) depLabel.textContent='Due Today';
+      document.getElementById('c-deposit').textContent='$0.00';
+      if(step2Title) step2Title.textContent='First payment July 1';
+      if(step2Body) step2Body.textContent='Your card is on file. Your first payment (remaining deposits + month 1 installment) will be charged on July 1, 2026. Regular monthly installments follow on the 1st of each subsequent month.';
     } else {
       if(deposit) document.getElementById('c-deposit').textContent='$'+parseFloat(deposit).toFixed(2);
     }
