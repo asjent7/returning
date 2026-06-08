@@ -300,8 +300,7 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
 .confirm-contact a{color:var(--gold);text-decoration:none;font-weight:600}
 
 
-#returning-banner{display:none;margin:0 28px 20px;padding:14px 18px;background:linear-gradient(135deg,rgba(46,125,50,.18),rgba(46,125,50,.08));border:1.5px solid var(--green-bd);border-radius:var(--r)}
-#returning-banner.show{display:flex;align-items:flex-start;gap:12px}
+#returning-banner{display:flex;align-items:flex-start;gap:12px;margin:0 28px 20px;padding:14px 18px;background:linear-gradient(135deg,rgba(46,125,50,.18),rgba(46,125,50,.08));border:1.5px solid var(--green-bd);border-radius:var(--r)}
 </style>
 </head>
 <body>
@@ -1458,8 +1457,6 @@ function handleBdClick(e){if(e.target===document.getElementById('modal'))closeMo
     isReturning=true;
     existingDeposit=parseFloat(params.get('deposit')||'197');
     setTimeout(function(){
-      var b=document.getElementById('returning-banner');
-      if(b) b.classList.add('show');
       switchTab('registration');
     },100);
   }
