@@ -1185,8 +1185,7 @@ function calcAndRender(){
       // Non-performer deposits still needed (can't be negative)
       var depsStillNeeded=Math.max(0,nonPerfParts.length-(depsPaid-1));
       var addlDepTotal=depsStillNeeded*197;
-      var totalCredits=existingDeposit+addlDepTotal;
-      var remainingAfterAll=Math.max(0,t.grand-totalCredits);
+      var remainingAfterAll=Math.max(0,t.grand-existingDeposit);
       var moAdj=MOS[plan]>0?remainingAfterAll/MOS[plan]:remainingAfterAll;
       payRows+='<div class="r-row r-sub"><span class="rl">Deposits already paid ('+depsPaid+' × $197) ✓</span><span class="rv" style="color:#81c784">−'+fmt(existingDeposit)+'</span></div>';
       payRows+='<div class="r-row r-total" style="margin-top:4px"><span class="rl" style="font-size:13px;color:var(--gold)">Balance after all deposits</span><span class="rv" style="font-size:16px">'+fmt(remainingAfterAll)+'</span></div>';
@@ -1349,8 +1348,7 @@ function buildStep3(rooms){
       var depsPaid_s3=Math.floor(existingDeposit/197);
       var depsStillNeeded_s3=Math.max(0,nonPerfs_s3.length-(depsPaid_s3-1));
       var addlD_s3=depsStillNeeded_s3*197;
-      var totalC_s3=existingDeposit+addlD_s3;
-      var remain_s3=Math.max(0,t.grand-totalC_s3);
+      var remain_s3=Math.max(0,t.grand-existingDeposit);
       var mo_s3=MOS[plan]>0?Math.round(remain_s3/MOS[plan]*100)/100:remain_s3;
       payRows+='<div class="r-row r-sub"><span class="rl">Deposits already paid ('+depsPaid_s3+' × $197) ✓</span><span class="rv" style="color:#81c784">−'+fmt(existingDeposit)+'</span></div>';
       payRows+='<div class="r-row r-total" style="margin-top:4px"><span class="rl" style="font-size:13px;color:var(--gold)">Balance after all deposits</span><span class="rv" style="font-size:16px">'+fmt(remain_s3)+'</span></div>';
@@ -1393,7 +1391,7 @@ function buildStep3(rooms){
   var depsPaid3=isReturning?Math.floor(existingDeposit/197):1;
   var depsNeeded3=isReturning?Math.max(0,nonPerfs3.length-(depsPaid3-1)):nonPerfs3.length;
   var addlDeps3=isReturning?depsNeeded3*197:0;
-  var totalCreds3=isReturning?existingDeposit+addlDeps3:t.dep;
+  var totalCreds3=isReturning?existingDeposit:t.dep;
   var remainAdj3=Math.max(0,t.grand-totalCreds3);
   var moAdj3=MOS[plan]>0?Math.round(remainAdj3/MOS[plan]*100)/100:remainAdj3;
   window._step3={grand:t.grand,dep:t.dep,remaining:t.remaining,mo:isReturning?moAdj3:t.mo,plan:plan,perfCount:t.perfCount,planLabel:planLabels[plan],participants:allParts3,addlDeps:addlDeps3,adjMonthly:moAdj3,remainAfterAll:remainAdj3};
