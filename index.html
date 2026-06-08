@@ -1376,6 +1376,15 @@ function buildStep3(rooms){
     }
     roster+='</div>';
   }
+  var depDueCard='';
+  if(addlD_s3>0){
+    var depRows='';
+    nonPerfs_s3.forEach(function(m){
+      var d=details[m.id]||{};
+      depRows+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="color:var(--text)">'+(d.name||m.id)+' ('+typeLabel(m.type)+')</span><span style="color:var(--gold)">$197.00</span></div>';
+    });
+    depDueCard='<div class="res-card" style="margin-top:12px"><div class="res-hdr"><span class="res-hdr-l" style="color:var(--orange-tx)">OUTSTANDING DEPOSITS (NOT YET PAID)</span></div><div class="res-body">'+depRows+'<div style="display:flex;justify-content:space-between;padding:10px 0 0;font-size:14px;font-weight:700"><span style="color:var(--text)">Total due at checkout</span><span style="color:var(--gold)">$'+addlD_s3.toFixed(2)+'</span></div><div style="font-size:11px;color:var(--muted);margin-top:4px">These deposits will be collected when you complete checkout.</div></div></div>';
+  }
   // Build participant list for returning deposit calculations
   var allParts3=[];
   for(var ri3=0;ri3<rooms.length;ri3++){rooms[ri3].members.forEach(function(m){allParts3.push(m);});}
@@ -1387,7 +1396,7 @@ function buildStep3(rooms){
   var remainAdj3=Math.max(0,t.grand-totalCreds3);
   var moAdj3=MOS[plan]>0?Math.round(remainAdj3/MOS[plan]*100)/100:remainAdj3;
   window._step3={grand:t.grand,dep:t.dep,remaining:t.remaining,mo:isReturning?moAdj3:t.mo,plan:plan,perfCount:t.perfCount,planLabel:planLabels[plan],participants:allParts3,addlDeps:addlDeps3,adjMonthly:moAdj3,remainAfterAll:remainAdj3};
-  document.getElementById('step3-content').innerHTML='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Trip Summary</span><span class="res-hdr-r">'+planLabels[plan]+'</span></div><div class="res-body">'+rows+'<div class="r-row r-total"><span class="rl">Total Trip Investment</span><span class="rv">'+fmt(t.grand)+'</span></div>'+payRows+'</div>'+depNote+'</div><div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Participant Roster</span></div><div class="res-body" style="padding-top:6px;padding-bottom:6px">'+roster+'</div></div>';
+  document.getElementById('step3-content').innerHTML='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Trip Summary</span><span class="res-hdr-r">'+planLabels[plan]+'</span></div><div class="res-body">'+rows+'<div class="r-row r-total"><span class="rl">Total Trip Investment</span><span class="rv">'+fmt(t.grand)+'</span></div>'+payRows+'</div>'+depNote+'</div><div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Participant Roster</span></div><div class="res-body" style="padding-top:6px;padding-bottom:6px">'+roster+'</div></div>'+depDueCard;
 }
 
 function openModal(){
