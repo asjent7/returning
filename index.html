@@ -1162,8 +1162,10 @@ function calcAndRender(){
   var payRows='';
   if(plan!=='full'&&t.perfCount>0){
 
-    payRows+='<div class="r-row r-total" style="margin-top:4px"><span class="rl" style="font-size:13px;color:var(--gold)">Balance after deposit</span><span class="rv" style="font-size:16px">'+fmt(t.remaining)+'</span></div>';
-    payRows+='<div class="r-row r-mo"><span class="rl">Monthly payment × '+MOS[plan]+' months</span><span class="rv">'+fmt(t.mo)+'/mo</span></div>';
+    var balAfterDep=Math.max(0,t.grand-existingDeposit);
+    var moAfterDep=MOS[plan]>0?Math.round(balAfterDep/MOS[plan]*100)/100:0;
+    payRows+='<div class="r-row r-total" style="margin-top:4px"><span class="rl" style="font-size:13px;color:var(--gold)">Balance after deposit</span><span class="rv" style="font-size:16px">'+fmt(balAfterDep)+'</span></div>';
+    payRows+='<div class="r-row r-mo"><span class="rl">Monthly payment × '+MOS[plan]+' months</span><span class="rv">'+fmt(moAfterDep)+'/mo</span></div>';
   }
   var depNote='';
   el.innerHTML='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Trip Estimate</span><span class="res-hdr-r">'+planLabels[plan]+'</span></div><div class="res-body">'+rows+'<div class="r-row r-total"><span class="rl">Total Trip Investment</span><span class="rv">'+fmt(t.grand)+'</span></div>'+payRows+'</div>'+depNote+'</div>';
