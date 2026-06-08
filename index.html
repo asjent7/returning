@@ -1312,6 +1312,8 @@ function validateStep2(){
     if(!d.name||!d.name.trim()){alert('Please enter a name for all participants.');return false;}
     if(!d.email||!d.email.trim()){alert('Please enter an email for '+(d.name||'a participant')+'.');return false;}
     if(!d.phone||!d.phone.trim()){alert('Please enter a phone number for '+(d.name||'a participant')+'.');return false;}
+    if(m.type!=='occupant'&&!d.shirt){alert('Please select a t-shirt size for '+(d.name||'a participant')+'.');return false;}
+    if(m.type==='occupant'&&d.shirtAddon&&!d.shirt){alert('Please select a t-shirt size for '+(d.name||'a participant')+'.');return false;}
   }
   return true;
 }
