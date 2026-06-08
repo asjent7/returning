@@ -331,7 +331,7 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
     <div class="confirm-row"><span class="cl">Payment Plan</span><span class="cv" id="c-plan">—</span></div>
     <div class="confirm-row"><span class="cl">Performer Deposit</span><span class="cv" style="color:#81c784">Already paid ✓</span></div>
     <div class="confirm-row"><span class="cl">Monthly Payment</span><span class="cv" id="c-monthly">—</span></div>
-    <div class="confirm-row highlight"><span class="cl" id="c-deposit-label">Paid Today</span><span class="cv" id="c-deposit">—</span></div>
+    <div class="confirm-row highlight"><span class="cl" id="c-deposit-label">Paid Today</span><span class="cv"><span id="c-deposit">—</span><span id="c-deposit-prev" style="display:none;font-size:11px;color:#81c784"></span><span id="c-deposit-today" style="display:none;font-size:11px"></span></span></div>
     <div class="confirm-row" id="c-first-row" style="display:none"><span class="cl">First Payment (July 1)</span><span class="cv" id="c-first">—</span></div>
   </div>
 
@@ -702,7 +702,7 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
         <div id="co-A" onclick="selectCo('A')" style="cursor:pointer;border:1px solid var(--border);background:var(--black3);border-radius:var(--rs);padding:12px">
           <div style="font-size:12px;font-weight:700;color:var(--white);margin-bottom:3px">Pay Deposits Now</div>
           <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5">Pay remaining deposits at start. Equal monthly payments after.</div>
-          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">Due today (July 1)</div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">Due today</div>
           <div style="font-size:15px;font-weight:700;color:var(--gold);font-family:var(--mono);margin-bottom:6px" id="co-A-dep">—</div>
           <div style="font-size:10px;color:var(--muted);margin-bottom:2px">Then</div>
           <div style="font-size:12px;font-weight:600;color:var(--white);font-family:var(--mono)" id="co-A-mo">—</div>
@@ -1364,7 +1364,7 @@ function buildStep3(rooms){
       var remain_s3=Math.max(0,t.grand-totalC_s3);
       var mo_s3=MOS[plan]>0?Math.round(remain_s3/MOS[plan]*100)/100:remain_s3;
       payRows+='<div class="r-row r-sub"><span class="rl">Deposits already paid ('+depsPaid_s3+' × $197) ✓</span><span class="rv" style="color:#81c784">−'+fmt(existingDeposit)+'</span></div>';
-      if(depsStillNeeded_s3>0) payRows+='<div class="r-row r-sub"><span class="rl">Additional deposits required ('+depsStillNeeded_s3+' × $197) ✓</span><span class="rv" style="color:#81c784">−'+fmt(addlD_s3)+'</span></div>';
+
       var remB_s3=Math.max(0,t.grand-existingDeposit);
       var moB_s3=MOS[plan]>0?Math.round(remB_s3/MOS[plan]*100)/100:remB_s3;
       payRows+='<div class="r-row r-total" style="margin-top:4px"><span class="rl" style="font-size:13px;color:var(--gold)">Remaining balance</span><span class="rv" style="font-size:16px">'+fmt(remB_s3)+'</span></div>';
@@ -1403,7 +1403,17 @@ function buildStep3(rooms){
   var remB3=Math.max(0,t.grand-existingDeposit);
   var moB3=MOS[plan]>0?Math.round(remB3/MOS[plan]*100)/100:remB3;
   window._step3={grand:t.grand,dep:t.dep,remaining:t.remaining,mo:isReturning?moB3:t.mo,plan:plan,perfCount:t.perfCount,planLabel:planLabels[plan],participants:allParts3,addlDeps:addlDeps3};
-  document.getElementById('step3-content').innerHTML='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Trip Summary</span><span class="res-hdr-r">'+planLabels[plan]+'</span></div><div class="res-body">'+rows+'<div class="r-row r-total"><span class="rl">Total Trip Investment</span><span class="rv">'+fmt(t.grand)+'</span></div>'+payRows+'</div>'+depNote+'</div><div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Participant Roster</span></div><div class="res-body" style="padding-top:6px;padding-bottom:6px">'+roster+'</div></div>';
+  var depDueCard='';
+  if(isReturning&&typeof depsStillNeeded_s3!=='undefined'&&depsStillNeeded_s3>0){
+    var depDueRows='';
+    var depPartsArr=nonPerfs_s3.slice(depsPaid_s3-1);
+    for(var ddi=0;ddi<depPartsArr.length;ddi++){
+      var ddp=depPartsArr[ddi];var ddpd=details[ddp.id]||{};
+      depDueRows+='<div class="r-row r-sub"><span class="rl">'+(ddpd.name||'Participant')+' ('+typeLabel(ddp.type)+')</span><span class="rv">$197.00</span></div>';
+    }
+    depDueCard='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l" style="color:var(--gold)">Deposits Due at Registration</span></div><div class="res-body">'+depDueRows+'<div class="r-row r-total"><span class="rl" style="font-size:13px">Total due at checkout</span><span class="rv" style="font-size:16px">'+fmt(addlD_s3)+'</span></div><div style="padding:6px 0 2px;font-size:11px;color:var(--muted)">These deposits will be collected at Stripe checkout.</div></div></div>';
+  }
+  document.getElementById('step3-content').innerHTML='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Trip Summary</span><span class="res-hdr-r">'+planLabels[plan]+'</span></div><div class="res-body">'+rows+'<div class="r-row r-total"><span class="rl">Total Trip Investment</span><span class="rv">'+fmt(t.grand)+'</span></div>'+payRows+'</div>'+depNote+'</div><div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Participant Roster</span></div><div class="res-body" style="padding-top:6px;padding-bottom:6px">'+roster+'</div></div>'+depDueCard;
 }
 
 var selectedCoOption='B';
@@ -1568,6 +1578,7 @@ var existingDeposit=0;
     document.getElementById('main-app').style.display='none';
     var planLabel=params.get('plan_label')||'';
     var deposit=params.get('deposit')||'';
+    var existing=params.get('existing')||'';
     var monthly=params.get('monthly')||'';
     var months=params.get('months')||'';
     var isRet=params.get('returning')==='1';
@@ -1575,11 +1586,18 @@ var existingDeposit=0;
     if(monthly&&months&&months!=='0') document.getElementById('c-monthly').textContent='$'+parseFloat(monthly).toFixed(2)+'/mo × '+months+' months, starting July 1, 2026';
     else if(monthly==='0'||months==='0') document.getElementById('c-monthly').textContent='Paid in full';
     if(isRet){
-      var depLabel=document.getElementById('c-deposit-label');
       var step2Title=document.getElementById('c-step2-title');
       var step2Body=document.getElementById('c-step2-body');
-      if(depLabel) depLabel.textContent='Deposit Paid Today';
-      document.getElementById('c-deposit').textContent=deposit?'$'+parseFloat(deposit).toFixed(2):'$0.00';
+      var depLabel=document.getElementById('c-deposit-label');
+      var depTotal=parseFloat(deposit)||0;
+      var depExisting=parseFloat(existing)||0;
+      var depToday=Math.max(0,depTotal-depExisting);
+      if(depLabel) depLabel.textContent='Deposit(s) Made';
+      document.getElementById('c-deposit').style.display='none';
+      var prevEl=document.getElementById('c-deposit-prev');
+      var todayEl=document.getElementById('c-deposit-today');
+      if(prevEl){prevEl.style.display='block';prevEl.textContent='Previously paid: $'+depExisting.toFixed(2);}
+      if(todayEl){todayEl.style.display='block';todayEl.textContent='Paid today: $'+depToday.toFixed(2);}
       if(step2Title) step2Title.textContent='Monthly payments begin July 1, 2026';
       if(step2Body) step2Body.textContent='Your card is on file. Monthly installments will be automatically charged on the 1st of each month starting July 1, 2026.';
     } else {
