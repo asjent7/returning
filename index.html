@@ -1400,7 +1400,12 @@ function openModal(){
     }
     r+='<div class="ms-row"><span class="ml">Monthly × '+MOS[s.plan]+' starting July 1</span><span class="mv">'+fmt(adjMonthly)+'/mo</span></div>';
     if(titleEl) titleEl.textContent='Set Up Your Payment Plan';
-    if(noteEl) noteEl.textContent='By saving your payment information, ADX Academy will charge your card according to your payment schedule beginning July 1, 2026.';
+    if(noteEl){
+      noteEl.style.color='var(--gold)';
+      noteEl.textContent=addlDeps>0
+        ?'By saving your payment information, ADX Academy will charge your card according to your payment schedule beginning July 1, 2026.'
+        :'No deposit is due today. Please enter your payment information so we have a card on file for your monthly installments beginning July 1, 2026.';
+    }
     if(btnEl) btnEl.textContent=addlDeps>0?'🔒 Pay $'+addlDeps.toFixed(2)+' Deposits Today — Installments Start July 1':'🔒 Set Up My Payment Plan';
   } else if(s.plan==='full'){
     if(s.perfCount>0) r+='<div class="ms-row ms-tot"><span class="ml">Due today</span><span class="mv">'+fmt(s.grand)+'</span></div>';
