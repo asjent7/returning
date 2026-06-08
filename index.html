@@ -1455,20 +1455,26 @@ function secureSpot(){
     }
   }
 
+  var nonPerfs=participants.filter(function(p){return p.type!=='performer';});
+  var depsPaidFE=Math.floor(existingDeposit/197);
+  var depsStillNeededFE=Math.max(0,nonPerfs.length-(depsPaidFE-1));
+  var addlDepositTotalFE=depsStillNeededFE*197;
+  console.log('[secureSpot] existingDeposit:',existingDeposit,'| nonPerfCount:',nonPerfs.length,'| depsPaid:',depsPaidFE,'| depsStillNeeded:',depsStillNeededFE,'| addlDepositTotal:',addlDepositTotalFE,'| s.addlDeps:',s.addlDeps);
+
   var payload={
     experience:'broadway_2027',
     client:'cyt_houston',
     plan:s.plan,
     planLabel:s.planLabel,
-    depositAmount:s.dep,
     grandTotal:s.grand,
-    monthlyAmount:s.mo,
+    monthlyAmount:s.adjMonthly||s.mo,
     months:MOS[s.plan],
     perfCount:s.perfCount,
+    existingDeposit:existingDeposit,
     participants:participants
   };
 
-  fetch('https://adtn-platform-production.up.railway.app/api/academy/broadway/checkout',{
+  fetch('https://adtn-platform-production.up.railway.app/api/academy/broadway/returning-checkout',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify(payload)
