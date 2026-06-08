@@ -1161,7 +1161,7 @@ function calcAndRender(){
   var planLabels={'15':'15-Month','14':'14-Month','13':'13-Month','12':'12-Month Early Bird','11':'11-Month','10':'10-Month','9':'9-Month','8':'8-Month','7':'7-Month','6':'6-Month','full':'Pay in Full'};
   var payRows='';
   if(plan!=='full'&&t.perfCount>0){
-    payRows+='<div class="r-row r-sub"><span class="rl">Performer deposit due now ('+fmt(DEPS[plan])+(t.perfCount>1?' × '+t.perfCount:'')+') — holds cast spot</span><span class="rv">'+fmt(t.dep)+'</span></div>';
+
     payRows+='<div class="r-row r-total" style="margin-top:4px"><span class="rl" style="font-size:13px;color:var(--gold)">Balance after deposit</span><span class="rv" style="font-size:16px">'+fmt(t.remaining)+'</span></div>';
     payRows+='<div class="r-row r-mo"><span class="rl">Monthly payment × '+MOS[plan]+' months</span><span class="rv">'+fmt(t.mo)+'/mo</span></div>';
   }
