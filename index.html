@@ -1165,7 +1165,7 @@ function calcAndRender(){
     payRows+='<div class="r-row r-total" style="margin-top:4px"><span class="rl" style="font-size:13px;color:var(--gold)">Balance after deposit</span><span class="rv" style="font-size:16px">'+fmt(t.remaining)+'</span></div>';
     payRows+='<div class="r-row r-mo"><span class="rl">Monthly payment × '+MOS[plan]+' months</span><span class="rv">'+fmt(t.mo)+'/mo</span></div>';
   }
-  var depNote=plan!=='full'&&t.perfCount>0?'<div style="padding:12px 20px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);line-height:1.6;background:rgba(255,183,46,.03)"><strong style="color:var(--gold)">About your deposit:</strong> Only the performer deposit is collected today. Deposits for all other travelers will be requested in 30 days alongside their first installment payment.</div>':'';
+  var depNote='';
   el.innerHTML='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Trip Estimate</span><span class="res-hdr-r">'+planLabels[plan]+'</span></div><div class="res-body">'+rows+'<div class="r-row r-total"><span class="rl">Total Trip Investment</span><span class="rv">'+fmt(t.grand)+'</span></div>'+payRows+'</div>'+depNote+'</div>';
   updateSavingNudge();
 }
@@ -1325,7 +1325,7 @@ function buildStep3(rooms){
     payRows+='<div class="r-row r-sub"><span class="rl">Performer deposit due now ('+fmt(DEPS[plan])+(t.perfCount>1?' × '+t.perfCount:'')+') — holds cast spot</span><span class="rv">'+fmt(t.dep)+'</span></div>';
     payRows+='<div class="r-row r-mo"><span class="rl">Monthly payment × '+MOS[plan]+' months</span><span class="rv">'+fmt(t.mo)+'/mo</span></div>';
   }
-  var depNote=plan!=='full'&&t.perfCount>0?'<div style="padding:12px 20px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);line-height:1.6;background:rgba(255,183,46,.03)"><strong style="color:var(--gold)">About your deposit:</strong> Only the performer deposit is collected today. Deposits for all other travelers will be requested in 30 days alongside their first installment payment.</div>':'';
+  var depNote='';
   var roster='';
   for(var ri=0;ri<rooms.length;ri++){
     var r=rooms[ri];
