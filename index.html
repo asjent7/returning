@@ -1053,15 +1053,30 @@ var ALL_PLANS=[
 ];
 
 function getAvailablePlans(){
-  var tripDate=new Date('2027-06-18');
-  var today=new Date();
-  today.setHours(0,0,0,0);
-  var msPerMonth=1000*60*60*24*30.44;
-  var monthsOut=Math.floor((tripDate-today)/msPerMonth);
-  return ALL_PLANS.filter(function(p){
-    if(p.key==='full') return true;
-    return p.months<=monthsOut;
-  });
+  // Use May 1, 2027 as the payment cutoff (first payment month before departure)
+  var target=new Date(2027,4,1); // May 1, 2027
+  var today=new Date();today.setHours(0,0,0,0);
+  // Whole months remaining (calendar-accurate)
+  var mo=(target.getFullYear()-today.getFullYear())*12+(target.getMonth()-today.getMonth());
+  if(today.getDate()>target.getDate()) mo--;
+  mo=Math.max(0,mo);
+
+  // Find longest installment plan that fits
+  var longest=null;
+  for(var i=0;i<ALL_PLANS.length;i++){
+    if(ALL_PLANS[i].key!=='full'&&ALL_PLANS[i].months<=mo){longest=ALL_PLANS[i];break;}
+  }
+
+  // Build: [longest (if not 9 or 6), 9-month (if fits), 6-month (if fits), Pay in Full]
+  var keys=[];
+  if(longest&&longest.key!=='9'&&longest.key!=='6') keys.push(longest.key);
+  if(mo>=9) keys.push('9');
+  if(mo>=6&&keys.indexOf('6')<0) keys.push('6');
+  keys.push('full');
+
+  return keys.map(function(k){
+    for(var i=0;i<ALL_PLANS.length;i++){if(ALL_PLANS[i].key===k)return ALL_PLANS[i];}
+  }).filter(Boolean);
 }
 
 function renderPlanGrid(){
