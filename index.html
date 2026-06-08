@@ -1504,14 +1504,12 @@ function handleBdClick(e){if(e.target===document.getElementById('modal'))closeMo
     return;
   }
 
-  // ── Returning registrant — activated via ?returning=1&deposit=197
-  if(params.get('returning')==='1'){
-    isReturning=true;
-    existingDeposit=parseFloat(params.get('deposit')||'197');
-    setTimeout(function(){
-      switchTab('registration');
-    },100);
-  }
+  // This page is always the returning registrant flow
+  isReturning=true;
+  existingDeposit=parseFloat(params.get('deposit')||'197');
+  setTimeout(function(){
+    switchTab('registration');
+  },100);
 })();
 
 setOcc('quad');
