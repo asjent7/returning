@@ -331,7 +331,7 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
     <div class="confirm-row"><span class="cl">Payment Plan</span><span class="cv" id="c-plan">—</span></div>
     <div class="confirm-row"><span class="cl">Performer Deposit</span><span class="cv" style="color:#81c784">Already paid ✓</span></div>
     <div class="confirm-row"><span class="cl">Monthly Payment</span><span class="cv" id="c-monthly">—</span></div>
-    <div class="confirm-row highlight"><span class="cl" id="c-deposit-label">Paid Today</span><span class="cv"><span id="c-deposit">—</span><span id="c-deposit-prev" style="display:none;font-size:11px;color:#81c784"></span><span id="c-deposit-today" style="display:none;font-size:11px"></span></span></div>
+    <div class="confirm-row highlight"><span class="cl" id="c-deposit-label">Deposit(s) Made</span><span class="cv" id="c-deposit">—</span></div>
     <div class="confirm-row" id="c-first-row" style="display:none"><span class="cl">First Payment (July 1)</span><span class="cv" id="c-first">—</span></div>
   </div>
 
@@ -696,30 +696,11 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
   <div class="modal" id="modal-inner">
     <div class="modal-hdr"><div class="modal-title" id="modal-title">Secure Your Spot</div><button class="modal-x" onclick="closeModal()">&#215;</button></div>
     <div class="modal-sum" id="modal-sum"></div>
-    <div id="co-wrap" style="display:none;padding:10px 20px 14px;border-bottom:1px solid var(--border)">
-      <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Choose your payment structure</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div id="co-A" onclick="selectCo('A')" style="cursor:pointer;border:1px solid var(--border);background:var(--black3);border-radius:var(--rs);padding:12px">
-          <div style="font-size:12px;font-weight:700;color:var(--white);margin-bottom:3px">Pay Deposits Now</div>
-          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5">Pay remaining deposits at start. Equal monthly payments after.</div>
-          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">Due today</div>
-          <div style="font-size:15px;font-weight:700;color:var(--gold);font-family:var(--mono);margin-bottom:6px" id="co-A-dep">—</div>
-          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">Then</div>
-          <div style="font-size:12px;font-weight:600;color:var(--white);font-family:var(--mono)" id="co-A-mo">—</div>
-        </div>
-        <div id="co-B" onclick="selectCo('B')" style="cursor:pointer;border:1px solid var(--border);background:var(--black3);border-radius:var(--rs);padding:12px">
-          <div style="font-size:12px;font-weight:700;color:var(--white);margin-bottom:3px">Start Fresh July 1</div>
-          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5">No charge today. Deposits folded into equal monthly payments.</div>
-          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">Due today</div>
-          <div style="font-size:15px;font-weight:700;color:var(--gold);font-family:var(--mono);margin-bottom:6px">$0.00</div>
-          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">First payment July 1</div>
-          <div style="font-size:12px;font-weight:600;color:var(--white);font-family:var(--mono);margin-bottom:4px" id="co-B-first">—</div>
-          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">Then</div>
-          <div style="font-size:12px;font-weight:600;color:var(--white);font-family:var(--mono)" id="co-B-mo">—</div>
-        </div>
-      </div>
+    <div id="plan-info" style="display:none;padding:12px 20px 14px;border-bottom:1px solid var(--border)">
+      <div id="plan-info-body" style="font-size:12px;color:var(--muted);line-height:1.6"></div>
     </div>
     <div class="modal-form" style="padding:12px 20px 20px">
+      <div id="modal-msg" style="display:none;margin-bottom:12px;font-size:11px;color:var(--muted);line-height:1.55;padding:10px 12px;background:rgba(255,255,255,.04);border-radius:var(--rs);border:1px solid var(--border)"></div>
       <button id="stripe-btn" onclick="secureSpot()" style="width:100%;padding:16px;background:var(--gold);color:var(--black);font-size:15px;font-weight:700;border:none;border-radius:var(--rs);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--sf);transition:background .15s">
         <span id="stripe-btn-text">Set Up My Payment Plan</span>
       </button>
@@ -1411,20 +1392,11 @@ function buildStep3(rooms){
       var ddp=depPartsArr[ddi];var ddpd=details[ddp.id]||{};
       depDueRows+='<div class="r-row r-sub"><span class="rl">'+(ddpd.name||'Participant')+' ('+typeLabel(ddp.type)+')</span><span class="rv">$197.00</span></div>';
     }
-    depDueCard='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l" style="color:var(--gold)">Deposits Due at Registration</span></div><div class="res-body">'+depDueRows+'<div class="r-row r-total"><span class="rl" style="font-size:13px">Total due at checkout</span><span class="rv" style="font-size:16px">'+fmt(addlD_s3)+'</span></div><div style="padding:6px 0 2px;font-size:11px;color:var(--muted)">These deposits will be collected at Stripe checkout.</div></div></div>';
+    depDueCard='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l" style="color:var(--orange-tx)">Outstanding Deposits (Not Yet Paid)</span></div><div class="res-body">'+depDueRows+'<div class="r-row r-total"><span class="rl" style="font-size:13px">Total due at checkout</span><span class="rv" style="font-size:16px;color:var(--orange-tx)">'+fmt(addlD_s3)+'</span></div><div style="padding:6px 0 2px;font-size:11px;color:var(--muted)">These deposits will be collected when you complete checkout.</div></div></div>';
   }
   document.getElementById('step3-content').innerHTML='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Trip Summary</span><span class="res-hdr-r">'+planLabels[plan]+'</span></div><div class="res-body">'+rows+'<div class="r-row r-total"><span class="rl">Total Trip Investment</span><span class="rv">'+fmt(t.grand)+'</span></div>'+payRows+'</div>'+depNote+'</div><div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Participant Roster</span></div><div class="res-body" style="padding-top:6px;padding-bottom:6px">'+roster+'</div></div>'+depDueCard;
 }
 
-var selectedCoOption='B';
-function selectCo(opt){
-  selectedCoOption=opt;
-  var active='cursor:pointer;border:1.5px solid var(--gold);background:var(--gold-dim);border-radius:var(--rs);padding:12px;';
-  var inactive='cursor:pointer;border:1px solid var(--border);background:var(--black3);border-radius:var(--rs);padding:12px;';
-  var cA=document.getElementById('co-A');var cB=document.getElementById('co-B');
-  if(cA) cA.style.cssText=opt==='A'?active:inactive;
-  if(cB) cB.style.cssText=opt==='B'?active:inactive;
-}
 
 function openModal(){
   var s=window._step3;if(!s)return;
@@ -1436,50 +1408,45 @@ function openModal(){
     if(s.perfCount>0) r+='<div class="ms-row ms-tot"><span class="ml">Performer deposit due today</span><span class="mv">'+fmt(s.dep)+'</span></div>';
   }
   document.getElementById('modal-sum').innerHTML=r;
-  // Co-wrap for returning registrants with outstanding deposits
-  var coWrap=document.getElementById('co-wrap');
-  if(isReturning&&s.plan!=='full'){
-    var addlDep=s.addlDeps||0;
-    var nMos=MOS[s.plan];
-    var remainB=Math.max(0,s.grand-existingDeposit);
-    var moB=nMos>0?Math.round(remainB/nMos*100)/100:remainB;
-    if(addlDep>0){
-      var cAEl=document.getElementById('co-A');
-      if(cAEl) cAEl.style.display='';
-      var remainA=Math.max(0,s.grand-existingDeposit-addlDep);
-      var moA=nMos>0?Math.round(remainA/nMos*100)/100:remainA;
-      document.getElementById('co-A-dep').textContent=fmt(addlDep);
-      document.getElementById('co-A-mo').textContent=fmt(moA)+'/mo × '+nMos+' starting July 1';
-      document.getElementById('co-B-first').textContent=fmt(moB);
-      document.getElementById('co-B-mo').textContent=fmt(moB)+'/mo × '+(nMos>1?nMos-1:nMos)+' more';
-      if(coWrap) coWrap.style.display='block';
-      selectCo(selectedCoOption||'B');
-    } else {
-      var cAEl=document.getElementById('co-A');
-      if(cAEl) cAEl.style.display='none';
-      document.getElementById('co-B-first').textContent=fmt(moB);
-      document.getElementById('co-B-mo').textContent=fmt(moB)+'/mo × '+nMos;
-      if(coWrap) coWrap.style.display='block';
-      selectedCoOption='B';
-      selectCo('B');
-    }
-  } else {
-    if(coWrap) coWrap.style.display='none';
-  }
-  // Dynamic title and note
+  var planInfo=document.getElementById('plan-info');
+  var planInfoBody=document.getElementById('plan-info-body');
+  var msgEl=document.getElementById('modal-msg');
   var titleEl=document.getElementById('modal-title');
   var noteEl=document.getElementById('modal-note');
   var btnEl=document.getElementById('stripe-btn-text');
   var errEl=document.getElementById('stripe-error');
   if(errEl){errEl.style.display='none';errEl.textContent='';}
-  if(s.plan==='full'){
-    if(titleEl) titleEl.textContent='Pay in Full — '+fmt(s.grand);
-    if(noteEl) noteEl.textContent='You will be redirected to our secure payment page to complete your registration.';
-    if(btnEl) btnEl.textContent='🔒 Pay in Full — '+fmt(s.grand);
+  if(isReturning&&s.plan!=='full'){
+    var addlDep=s.addlDeps||0;
+    var nMos=MOS[s.plan];
+    var remainB=Math.max(0,s.grand-existingDeposit);
+    var moB=nMos>0?Math.round(remainB/nMos*100)/100:remainB;
+    if(planInfoBody){
+      if(addlDep>0){
+        var remainA=Math.max(0,s.grand-existingDeposit-addlDep);
+        var moA=nMos>0?Math.round(remainA/nMos*100)/100:remainA;
+        planInfoBody.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span>Deposits due today</span><span style="color:var(--gold);font-weight:700;font-family:var(--mono)">'+fmt(addlDep)+'</span></div><div style="display:flex;justify-content:space-between;align-items:center"><span>Monthly × '+nMos+' starting July 1</span><span style="color:var(--white);font-weight:600;font-family:var(--mono)">'+fmt(moA)+'/mo</span></div>';
+      } else {
+        planInfoBody.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span>Due today</span><span style="color:#81c784;font-weight:700;font-family:var(--mono)">$0.00</span></div><div style="display:flex;justify-content:space-between;align-items:center"><span>Monthly × '+nMos+' starting July 1, 2026</span><span style="color:var(--white);font-weight:600;font-family:var(--mono)">'+fmt(moB)+'/mo</span></div>';
+      }
+    }
+    if(planInfo) planInfo.style.display='block';
+    if(msgEl){msgEl.textContent='By saving your payment information, ADX Academy will charge your card according to your payment schedule beginning July 1, 2026.';msgEl.style.display='block';}
+    if(titleEl) titleEl.textContent='Set Up Your Payment Plan';
+    if(noteEl) noteEl.textContent='';
+    if(btnEl) btnEl.textContent=addlDep>0?'Pay Deposits & Set Up Plan':'Set Up My Payment Plan';
   } else {
-    if(titleEl) titleEl.textContent=isReturning?'Set Up Your Payment Plan':'Secure Your Spot — '+fmt(s.dep)+' Deposit';
-    if(noteEl) noteEl.textContent=isReturning?'':'Deposits are refundable up to 30 days and secures your spot on ADX Broadway 2027 · You will be redirected to our secure payment page';
-    if(btnEl) btnEl.textContent=isReturning?'Set Up My Payment Plan':'🔒 Pay Deposit & Secure My Spot — '+fmt(s.dep);
+    if(planInfo) planInfo.style.display='none';
+    if(msgEl) msgEl.style.display='none';
+    if(s.plan==='full'){
+      if(titleEl) titleEl.textContent='Pay in Full — '+fmt(s.grand);
+      if(noteEl) noteEl.textContent='You will be redirected to our secure payment page to complete your registration.';
+      if(btnEl) btnEl.textContent='🔒 Pay in Full — '+fmt(s.grand);
+    } else {
+      if(titleEl) titleEl.textContent='Secure Your Spot — '+fmt(s.dep)+' Deposit';
+      if(noteEl) noteEl.textContent='Deposits are refundable up to 30 days and secures your spot on ADX Broadway 2027 · You will be redirected to our secure payment page';
+      if(btnEl) btnEl.textContent='🔒 Pay Deposit & Secure My Spot — '+fmt(s.dep);
+    }
   }
   // Reset button state
   var btn=document.getElementById('stripe-btn');
@@ -1535,8 +1502,7 @@ function secureSpot(){
     participants:participants,
     isReturning:isReturning,
     existingDeposit:isReturning?existingDeposit:0,
-    additionalDeposits:isReturning?nonPerfCount*197:0,
-    checkoutOption:isReturning?selectedCoOption:'A'
+    additionalDeposits:isReturning?nonPerfCount*197:0
   };
 
   var endpoint=isReturning?
@@ -1558,7 +1524,7 @@ function secureSpot(){
   })
   .catch(function(err){
     if(btn){btn.disabled=false;btn.style.opacity='1';}
-    if(btnText) btnText.textContent=isReturning?'Redirecting to secure payment…':'🔒 Pay Deposit & Secure My Spot — '+fmt(s.dep);
+    if(btnText) btnText.textContent=isReturning?((s.addlDeps||0)>0?'Pay Deposits & Set Up Plan':'Set Up My Payment Plan'):'🔒 Pay Deposit & Secure My Spot — '+fmt(s.dep);
     if(errEl){errEl.style.display='block';errEl.textContent='Something went wrong: '+err.message+'. Please try again or contact ADX@adamsdavy.com';}
   });
 }
@@ -1593,11 +1559,7 @@ var existingDeposit=0;
       var depExisting=parseFloat(existing)||0;
       var depToday=Math.max(0,depTotal-depExisting);
       if(depLabel) depLabel.textContent='Deposit(s) Made';
-      document.getElementById('c-deposit').style.display='none';
-      var prevEl=document.getElementById('c-deposit-prev');
-      var todayEl=document.getElementById('c-deposit-today');
-      if(prevEl){prevEl.style.display='block';prevEl.textContent='Previously paid: $'+depExisting.toFixed(2);}
-      if(todayEl){todayEl.style.display='block';todayEl.textContent='Paid today: $'+depToday.toFixed(2);}
+      document.getElementById('c-deposit').textContent='$'+depToday.toFixed(2);
       if(step2Title) step2Title.textContent='Monthly payments begin July 1, 2026';
       if(step2Body) step2Body.textContent='Your card is on file. Monthly installments will be automatically charged on the 1st of each month starting July 1, 2026.';
     } else {
