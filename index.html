@@ -1152,6 +1152,29 @@ function buildEstimateRows(rooms){
   return rows;
 }
 
+function calcFullDiscount(rooms){
+  var totalDiscount=0;var discountRows='';
+  for(var ri=0;ri<rooms.length;ri++){
+    var r=rooms[ri];
+    var groups={performer:[],chaperone:[],fan:[],occupant:[]};
+    for(var mi=0;mi<r.members.length;mi++){var m=r.members[mi];if(groups[m.type])groups[m.type].push(m);}
+    if(groups.performer.length>0){
+      var pd=groups.performer.length*45;
+      totalDiscount+=pd;
+      discountRows+='<div class="r-row r-sub"><span class="rl" style="padding-left:12px;color:#81c784">Performer Pay-in-Full Discount'+(groups.performer.length>1?' ('+groups.performer.length+' \xd7 $45)':'')+'</span><span class="rv" style="color:#81c784">−'+fmt(pd)+'</span></div>';
+    }
+    var npTypes=['chaperone','fan'];
+    for(var ti=0;ti<npTypes.length;ti++){
+      var ntype=npTypes[ti];var grp=groups[ntype];if(!grp||!grp.length)continue;
+      var discPer=Math.min(Math.round(grp[0].price*0.15*100)/100,75);
+      var td=Math.round(discPer*grp.length*100)/100;
+      totalDiscount+=td;
+      discountRows+='<div class="r-row r-sub"><span class="rl" style="padding-left:12px;color:#81c784">'+typeLabel(ntype)+' Pay-in-Full Discount'+(grp.length>1?' ('+grp.length+' \xd7 $'+discPer.toFixed(2)+')':'')+'</span><span class="rv" style="color:#81c784">−'+fmt(td)+'</span></div>';
+    }
+  }
+  return{totalDiscount:Math.round(totalDiscount*100)/100,discountRows:discountRows};
+}
+
 function calcAndRender(){
   var rooms=buildRoomSummaries();
   var el=document.getElementById('live-estimate');
@@ -1159,16 +1182,17 @@ function calcAndRender(){
   var t=calcTotals(rooms);
   var rows=buildEstimateRows(rooms);
   var planLabels={'15':'15-Month','14':'14-Month','13':'13-Month','12':'12-Month Early Bird','11':'11-Month','10':'10-Month','9':'9-Month','8':'8-Month','7':'7-Month','6':'6-Month','full':'Pay in Full'};
+  var discRows='';var discountTotal=0;var discountedGrand=t.grand;
+  if(plan==='full'){var disc=calcFullDiscount(rooms);discRows=disc.discountRows;discountTotal=disc.totalDiscount;discountedGrand=Math.round((t.grand-discountTotal)*100)/100;}
   var payRows='';
   if(plan!=='full'&&t.perfCount>0){
-
     var balAfterDep=Math.max(0,t.grand-existingDeposit);
     var moAfterDep=MOS[plan]>0?Math.round(balAfterDep/MOS[plan]*100)/100:0;
     payRows+='<div class="r-row r-total" style="margin-top:4px"><span class="rl" style="font-size:13px;color:var(--gold)">Balance after deposit</span><span class="rv" style="font-size:16px">'+fmt(balAfterDep)+'</span></div>';
     payRows+='<div class="r-row r-mo"><span class="rl">Monthly payment × '+MOS[plan]+' months</span><span class="rv">'+fmt(moAfterDep)+'/mo</span></div>';
   }
-  var depNote='';
-  el.innerHTML='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Trip Estimate</span><span class="res-hdr-r">'+planLabels[plan]+'</span></div><div class="res-body">'+rows+'<div class="r-row r-total"><span class="rl">Total Trip Investment</span><span class="rv">'+fmt(t.grand)+'</span></div>'+payRows+'</div>'+depNote+'</div>';
+  var depNote=plan==='full'&&discountTotal>0?'<div style="padding:8px 16px 12px;font-size:11px;color:#81c784;text-align:center;line-height:1.5">💵 Save up to 15% on experience fees when you pay in full. Discounts do not apply to airfare or travel fees.</div>':'';
+  el.innerHTML='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Trip Estimate</span><span class="res-hdr-r">'+planLabels[plan]+'</span></div><div class="res-body">'+rows+discRows+'<div class="r-row r-total"><span class="rl">Total Trip Investment</span><span class="rv">'+fmt(discountedGrand)+'</span></div>'+payRows+'</div>'+depNote+'</div>';
   updateSavingNudge();
 }
 
@@ -1324,6 +1348,8 @@ function buildStep3(rooms){
   var t=calcTotals(rooms);
   var rows=buildEstimateRows(rooms);
   var planLabels={'15':'15-Month','14':'14-Month','13':'13-Month','12':'12-Month Early Bird','11':'11-Month','10':'10-Month','9':'9-Month','8':'8-Month','7':'7-Month','6':'6-Month','full':'Pay in Full'};
+  var s3discRows='';var s3discountTotal=0;var s3discountedGrand=t.grand;
+  if(plan==='full'){var s3disc=calcFullDiscount(rooms);s3discRows=s3disc.discountRows;s3discountTotal=s3disc.totalDiscount;s3discountedGrand=Math.round((t.grand-s3discountTotal)*100)/100;}
   // Returning-specific deposit calculations
   var allParts3=[];
   for(var ri3=0;ri3<rooms.length;ri3++){rooms[ri3].members.forEach(function(m){allParts3.push(m);});}
@@ -1373,8 +1399,9 @@ function buildStep3(rooms){
     }
     roster+='</div>';
   }
-  window._step3={grand:t.grand,dep:t.dep,remaining:t.remaining,mo:isReturning?Math.max(0,t.grand-existingDeposit)/MOS[plan]:t.mo,plan:plan,perfCount:t.perfCount,planLabel:planLabels[plan],addlDeps:addlDeps3,adjMonthly:moAdj3};
-  document.getElementById('step3-content').innerHTML='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Trip Summary</span><span class="res-hdr-r">'+planLabels[plan]+'</span></div><div class="res-body">'+rows+'<div class="r-row r-total"><span class="rl">Total Trip Investment</span><span class="rv">'+fmt(t.grand)+'</span></div>'+payRows+'</div></div>'+depDueCard+'<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Participant Roster</span></div><div class="res-body" style="padding-top:6px;padding-bottom:6px">'+roster+'</div></div>';
+  var s3fullNote=plan==='full'&&s3discountTotal>0?'<div style="padding:8px 16px 12px;font-size:11px;color:#81c784;text-align:center;line-height:1.5">💵 Save up to 15% on experience fees when you pay in full. Discounts do not apply to airfare or travel fees.</div>':'';
+  window._step3={grand:t.grand,dep:t.dep,remaining:t.remaining,mo:isReturning?Math.max(0,t.grand-existingDeposit)/MOS[plan]:t.mo,plan:plan,perfCount:t.perfCount,planLabel:planLabels[plan],addlDeps:addlDeps3,adjMonthly:moAdj3,discountedGrand:s3discountedGrand,discountAmount:s3discountTotal};
+  document.getElementById('step3-content').innerHTML='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Trip Summary</span><span class="res-hdr-r">'+planLabels[plan]+'</span></div><div class="res-body">'+rows+s3discRows+'<div class="r-row r-total"><span class="rl">Total Trip Investment</span><span class="rv">'+fmt(s3discountedGrand)+'</span></div>'+payRows+'</div>'+s3fullNote+'</div>'+depDueCard+'<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Participant Roster</span></div><div class="res-body" style="padding-top:6px;padding-bottom:6px">'+roster+'</div></div>';
 }
 
 function openModal(){
@@ -1407,10 +1434,12 @@ function openModal(){
     }
     if(btnEl) btnEl.textContent=addlDeps>0?'🔒 Pay $'+addlDeps.toFixed(2)+' Deposits Today — Installments Start July 1':'🔒 Set Up My Payment Plan';
   } else if(s.plan==='full'){
-    if(s.perfCount>0) r+='<div class="ms-row ms-tot"><span class="ml">Due today</span><span class="mv">'+fmt(s.grand)+'</span></div>';
-    if(titleEl) titleEl.textContent='Pay in Full — '+fmt(s.grand);
-    if(noteEl) noteEl.textContent='You will be redirected to our secure payment page to complete your registration.';
-    if(btnEl) btnEl.textContent='🔒 Pay in Full — '+fmt(s.grand);
+    var fullAmt=s.discountedGrand||s.grand;
+    if(s.discountAmount>0) r+='<div class="ms-row"><span class="ml" style="color:#81c784">Pay-in-Full Discount</span><span class="mv" style="color:#81c784">−'+fmt(s.discountAmount)+'</span></div>';
+    r+='<div class="ms-row ms-tot"><span class="ml">Due today</span><span class="mv">'+fmt(fullAmt)+'</span></div>';
+    if(titleEl) titleEl.textContent='Pay in Full — '+fmt(fullAmt);
+    if(noteEl){noteEl.style.color='var(--gold)';noteEl.textContent='You will be redirected to our secure payment page to complete your registration.';}
+    if(btnEl) btnEl.textContent='🔒 Pay in Full — '+fmt(fullAmt);
   } else {
     if(s.plan!=='full'&&s.mo>0) r+='<div class="ms-row"><span class="ml">Monthly payment × '+MOS[s.plan]+'</span><span class="mv">'+fmt(s.mo)+'/mo</span></div>';
     if(s.perfCount>0) r+='<div class="ms-row ms-tot"><span class="ml">Performer deposit due today</span><span class="mv">'+fmt(s.dep)+'</span></div>';
@@ -1470,11 +1499,12 @@ function secureSpot(){
     client:'cyt_houston',
     plan:s.plan,
     planLabel:s.planLabel,
-    grandTotal:s.grand,
+    grandTotal:s.plan==='full'?(s.discountedGrand||s.grand):s.grand,
     monthlyAmount:s.adjMonthly||s.mo,
     months:MOS[s.plan],
     perfCount:s.perfCount,
     existingDeposit:existingDeposit,
+    discountAmount:s.discountAmount||0,
     participants:participants
   };
 
