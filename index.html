@@ -1216,11 +1216,6 @@ function calcAndRender(){
       var remainingAfterAll=Math.max(0,t.grand-totalCredits);
       var moAdj=MOS[plan]>0?remainingAfterAll/MOS[plan]:remainingAfterAll;
       payRows+='<div class="r-row r-sub"><span class="rl">Deposits already paid ('+depsPaid+' × $197) ✓</span><span class="rv" style="color:#81c784">−'+fmt(existingDeposit)+'</span></div>';
-      if(depsStillNeeded>0){
-        payRows+='<div class="r-row r-sub"><span class="rl">Additional deposits ('+depsStillNeeded+' × $197) — due at checkout</span><span class="rv" style="color:#81c784">−'+fmt(addlDepTotal)+'</span></div>';
-      } else {
-        payRows+='<div class="r-row r-sub"><span class="rl">All participant deposits covered ✓</span><span class="rv" style="color:#81c784">$0 due</span></div>';
-      }
       payRows+='<div class="r-row r-total" style="margin-top:4px"><span class="rl" style="font-size:13px;color:var(--gold)">Balance after all deposits</span><span class="rv" style="font-size:16px">'+fmt(remainingAfterAll)+'</span></div>';
       payRows+='<div class="r-row r-mo"><span class="rl">Monthly payment × '+MOS[plan]+' months</span><span class="rv">'+fmt(moAdj)+'/mo</span></div>';
     } else {
