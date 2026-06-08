@@ -1410,7 +1410,7 @@ function openModal(){
   if(errEl){errEl.style.display='none';errEl.textContent='';}
   if(isReturning&&s.plan!=='full'){
     var addlDeps=s.addlDeps||0;
-    var adjMonthly=s.adjMonthly||s.mo||0;
+    var adjMonthly=addlDeps>0?Math.round(Math.max(0,s.grand-existingDeposit-addlDeps)/MOS[s.plan]*100)/100:(s.adjMonthly||s.mo||0);
     r+='<div class="ms-row"><span class="ml">Deposits already paid</span><span class="mv" style="color:#81c784">−'+fmt(existingDeposit)+'</span></div>';
     if(addlDeps>0){
       r+='<div class="ms-row ms-tot"><span class="ml">Deposits due today</span><span class="mv">'+fmt(addlDeps)+'</span></div>';
