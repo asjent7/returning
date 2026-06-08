@@ -301,6 +301,9 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
 
 
 #returning-banner{display:flex;align-items:flex-start;gap:12px;margin:0 28px 20px;padding:14px 18px;background:linear-gradient(135deg,rgba(46,125,50,.18),rgba(46,125,50,.08));border:1.5px solid var(--green-bd);border-radius:var(--r)}
+.billing-radio{display:flex;align-items:flex-start;gap:10px;margin-top:14px;padding:10px 12px;background:rgba(46,125,50,.07);border:1px solid rgba(46,125,50,.2);border-radius:var(--rs);cursor:pointer}
+.billing-radio input[type=radio]{accent-color:#81c784;width:15px;height:15px;flex-shrink:0;margin-top:2px;cursor:pointer}
+.billing-radio.selected{background:rgba(46,125,50,.16);border-color:rgba(46,125,50,.4)}
 </style>
 </head>
 <body>
@@ -710,6 +713,7 @@ var MOS  = {'15':14,'14':13,'13':12,'12':11,'11':10,'10':9,'9':8,'8':7,'7':6,'6'
 var scenario='A', occType='quad', plan='12', pCtr=0;
 var aPerformers=[], aFamilyRooms=[], bMembers=[], cRooms=[];
 var details={};
+var primaryBillingId=null;
 
 function fmt(n){return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function uid(){return ++pCtr;}
@@ -1224,6 +1228,10 @@ function goStep3(){if(!validateStep2())return;buildStep3(buildRoomSummaries());d
 function goStep2Back(){document.getElementById('step3').style.display='none';document.getElementById('step2').style.display='';setProgress(2);scrollToRegister();}
 
 function buildStep2Forms(rooms){
+  // Auto-default primaryBillingId to first non-performer, non-occupant
+  var nonPerfIds=[];
+  for(var ri0=0;ri0<rooms.length;ri0++){for(var mi0=0;mi0<rooms[ri0].members.length;mi0++){var m0=rooms[ri0].members[mi0];if(m0.type!=='performer'&&m0.type!=='occupant')nonPerfIds.push(m0.id);}}
+  if(!primaryBillingId||nonPerfIds.indexOf(primaryBillingId)<0) primaryBillingId=nonPerfIds[0]||null;
   var html='';var pIdx=0;
   for(var ri=0;ri<rooms.length;ri++){
     var r=rooms[ri];
@@ -1261,11 +1269,22 @@ function buildStep2Forms(rooms){
         }
         html+='</div>';
       }
+      if(!isOcc&&m.type!=='performer'){
+        var isBilling=primaryBillingId===m.id;
+        html+='<label class="billing-radio'+(isBilling?' selected':'')+'" onclick="setBillingContact(\''+m.id+'\');return false"><input type="radio" name="billing-contact" value="'+m.id+'"'+(isBilling?' checked':'')+' readonly><div><div style="font-size:12px;font-weight:600;color:'+(isBilling?'#81c784':'var(--text)')+'">Primary Billing Contact</div><div style="font-size:11px;color:var(--muted);margin-top:1px">Adult responsible for payments and the monthly plan</div></div></label>';
+      }
       html+='</div></div>';
     }
     html+='</div>';
   }
   document.getElementById('step2-forms').innerHTML=html;
+}
+
+function setBillingContact(id){
+  var rooms=buildRoomSummaries();
+  for(var ri=0;ri<rooms.length;ri++){for(var mi=0;mi<rooms[ri].members.length;mi++){saveDet(rooms[ri].members[mi].id);}}
+  primaryBillingId=id;
+  buildStep2Forms(rooms);
 }
 
 function saveDet(id){
@@ -1382,7 +1401,8 @@ function secureSpot(){
         email:d.email||'',
         phone:d.phone||'',
         shirt:d.shirt||'',
-        shirtAddon:d.shirtAddon||false
+        shirtAddon:d.shirtAddon||false,
+        isPrimaryBillingContact:primaryBillingId===m.id
       });
     }
   }
