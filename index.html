@@ -1337,9 +1337,6 @@ function buildStep3(rooms){
       payRows+='<div class="r-row r-sub"><span class="rl">Deposits already paid ('+depsPaid3+' × $197) ✓</span><span class="rv" style="color:#81c784">−'+fmt(existingDeposit)+'</span></div>';
       payRows+='<div class="r-row r-total" style="margin-top:4px"><span class="rl" style="font-size:13px;color:var(--gold)">Balance after all deposits</span><span class="rv" style="font-size:16px">'+fmt(Math.max(0,t.grand-existingDeposit))+'</span></div>';
       payRows+='<div class="r-row r-mo"><span class="rl">Monthly × '+MOS[plan]+' months starting July 1</span><span class="rv">'+fmt(moAdj3)+'/mo</span></div>';
-    } else {
-      payRows+='<div class="r-row r-sub"><span class="rl">Performer deposit due now ('+fmt(DEPS[plan])+(t.perfCount>1?' × '+t.perfCount:'')+') — holds cast spot</span><span class="rv">'+fmt(t.dep)+'</span></div>';
-      payRows+='<div class="r-row r-mo"><span class="rl">Monthly payment × '+MOS[plan]+' months</span><span class="rv">'+fmt(t.mo)+'/mo</span></div>';
     }
   }
   var depNote='';
