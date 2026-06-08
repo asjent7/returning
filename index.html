@@ -331,7 +331,7 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
     <div class="confirm-row"><span class="cl">Payment Plan</span><span class="cv" id="c-plan">—</span></div>
     <div class="confirm-row"><span class="cl">Performer Deposit</span><span class="cv" style="color:#81c784">Already paid ✓</span></div>
     <div class="confirm-row"><span class="cl">Monthly Payment</span><span class="cv" id="c-monthly">—</span></div>
-    <div class="confirm-row highlight"><span class="cl" id="c-deposit-label">Deposit(s) Made</span><span class="cv" id="c-deposit">—</span></div>
+    <div class="confirm-row highlight"><span class="cl" id="c-deposit-label">Total Deposits Made</span><span class="cv" id="c-deposit">—</span></div>
     <div class="confirm-row" id="c-first-row" style="display:none"><span class="cl">First Payment (July 1)</span><span class="cv" id="c-first">—</span></div>
   </div>
 
@@ -700,7 +700,7 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
       <div id="plan-info-body" style="font-size:12px;color:var(--muted);line-height:1.6"></div>
     </div>
     <div class="modal-form" style="padding:12px 20px 20px">
-      <div id="modal-msg" style="display:none;margin-bottom:12px;font-size:11px;color:var(--muted);line-height:1.55;padding:10px 12px;background:rgba(255,255,255,.04);border-radius:var(--rs);border:1px solid var(--border)"></div>
+      <div id="modal-msg" style="display:none;margin-bottom:12px;font-size:11px;color:var(--gold);line-height:1.55;padding:10px 12px;background:rgba(255,255,255,.04);border-radius:var(--rs);border:1px solid var(--border)"></div>
       <button id="stripe-btn" onclick="secureSpot()" style="width:100%;padding:16px;background:var(--gold);color:var(--black);font-size:15px;font-weight:700;border:none;border-radius:var(--rs);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--sf);transition:background .15s">
         <span id="stripe-btn-text">Set Up My Payment Plan</span>
       </button>
@@ -1324,6 +1324,8 @@ function validateStep2(){
     if(!d.name||!d.name.trim()){alert('Please enter a name for all participants.');return false;}
     if(!d.email||!d.email.trim()){alert('Please enter an email for '+(d.name||'a participant')+'.');return false;}
     if(!d.phone||!d.phone.trim()){alert('Please enter a phone number for '+(d.name||'a participant')+'.');return false;}
+    var needsShirt=(m.type!=='occupant')||(d.shirtAddon);
+    if(needsShirt&&(!d.shirt||!d.shirt.trim())){alert('Please select a t-shirt size for '+(d.name||'a participant')+'.');return false;}
   }
   return true;
 }
@@ -1558,7 +1560,7 @@ var existingDeposit=0;
       var depTotal=parseFloat(deposit)||0;
       var depExisting=parseFloat(existing)||0;
       var depToday=Math.max(0,depTotal-depExisting);
-      if(depLabel) depLabel.textContent='Deposit(s) Made';
+      if(depLabel) depLabel.textContent='Total Deposits Made';
       document.getElementById('c-deposit').textContent='$'+depToday.toFixed(2);
       if(step2Title) step2Title.textContent='Monthly payments begin July 1, 2026';
       if(step2Body) step2Body.textContent='Your card is on file. Monthly installments will be automatically charged on the 1st of each month starting July 1, 2026.';
