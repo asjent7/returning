@@ -1343,6 +1343,22 @@ function buildStep3(rooms){
     }
   }
   var depNote='';
+  var depDueCard='';
+  if(addlDeps3>0){
+    var coveredNP=Math.max(0,depsPaid3-1);
+    var depsHtml='';
+    for(var di=coveredNP;di<nonPerfs3.length;di++){
+      var dm=nonPerfs3[di];var dd=details[dm.id]||{};
+      depsHtml+='<div class="r-row r-sub"><span class="rl">'+(dd.name||'Member '+(di+1))+' · '+typeLabel(dm.type)+'</span><span class="rv">$197.00</span></div>';
+    }
+    depDueCard='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Deposits Due at Checkout</span><span class="res-hdr-r">'+fmt(addlDeps3)+'</span></div><div class="res-body">'
+      +depsHtml
+      +'<div class="r-row r-total" style="margin-top:6px"><span class="rl">Total due at checkout</span><span class="rv">'+fmt(addlDeps3)+'</span></div>'
+      +'<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08)">'
+      +'<div class="r-row"><span class="rl" style="font-size:12px;color:var(--muted)">Remaining balance after checkout</span><span class="rv">'+fmt(remainAdj3)+'</span></div>'
+      +'<div class="r-row r-mo"><span class="rl">Monthly \xd7 '+MOS[plan]+' months starting July 1</span><span class="rv">'+fmt(moAdj3)+'/mo</span></div>'
+      +'</div></div></div>';
+  }
   var roster='';
   for(var ri=0;ri<rooms.length;ri++){
     var r=rooms[ri];
@@ -1359,7 +1375,7 @@ function buildStep3(rooms){
     roster+='</div>';
   }
   window._step3={grand:t.grand,dep:t.dep,remaining:t.remaining,mo:isReturning?Math.max(0,t.grand-existingDeposit)/MOS[plan]:t.mo,plan:plan,perfCount:t.perfCount,planLabel:planLabels[plan],addlDeps:addlDeps3,adjMonthly:moAdj3};
-  document.getElementById('step3-content').innerHTML='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Trip Summary</span><span class="res-hdr-r">'+planLabels[plan]+'</span></div><div class="res-body">'+rows+'<div class="r-row r-total"><span class="rl">Total Trip Investment</span><span class="rv">'+fmt(t.grand)+'</span></div>'+payRows+'</div>'+depNote+'</div><div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Participant Roster</span></div><div class="res-body" style="padding-top:6px;padding-bottom:6px">'+roster+'</div></div>';
+  document.getElementById('step3-content').innerHTML='<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Trip Summary</span><span class="res-hdr-r">'+planLabels[plan]+'</span></div><div class="res-body">'+rows+'<div class="r-row r-total"><span class="rl">Total Trip Investment</span><span class="rv">'+fmt(t.grand)+'</span></div>'+payRows+'</div></div>'+depDueCard+'<div class="res-card"><div class="res-hdr"><span class="res-hdr-l">Participant Roster</span></div><div class="res-body" style="padding-top:6px;padding-bottom:6px">'+roster+'</div></div>';
 }
 
 function openModal(){
