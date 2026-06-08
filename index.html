@@ -1271,7 +1271,7 @@ function buildStep2Forms(rooms){
       }
       if(!isOcc&&m.type!=='performer'){
         var isBilling=primaryBillingId===m.id;
-        html+='<label class="billing-radio'+(isBilling?' selected':'')+'" onclick="setBillingContact(\''+m.id+'\');return false"><input type="radio" name="billing-contact" value="'+m.id+'"'+(isBilling?' checked':'')+' readonly><div><div style="font-size:12px;font-weight:600;color:'+(isBilling?'#81c784':'var(--text)')+'">Primary Billing Contact</div><div style="font-size:11px;color:var(--muted);margin-top:1px">Adult responsible for payments and the monthly plan</div></div></label>';
+        html+='<label class="billing-radio'+(isBilling?' selected':'')+'" onclick="setBillingContact('+m.id+');return false"><input type="radio" name="billing-contact" value="'+m.id+'"'+(isBilling?' checked':'')+' readonly><div><div style="font-size:12px;font-weight:600;color:'+(isBilling?'#81c784':'var(--text)')+'">Primary Billing Contact</div><div style="font-size:11px;color:var(--muted);margin-top:1px">Adult responsible for payments and the monthly plan</div></div></label>';
       }
       html+='</div></div>';
     }
