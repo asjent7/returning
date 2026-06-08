@@ -1054,15 +1054,18 @@ var ALL_PLANS=[
 
 function getAvailablePlans(){
   var today=new Date();
-  // Months remaining = current month through May 2027 inclusive
-  // June 2026→12, July 2026→11, Aug 2026→10, …, May 2027→1
   var mo=(2027-today.getFullYear())*12+(4-today.getMonth())+1;
   mo=Math.max(0,mo);
-  // Always show 9-month, 6-month, and Pay in Full regardless of months remaining
-  var always={9:true,6:true,full:true};
-  return ALL_PLANS.filter(function(p){
-    return p.months<=mo||always[p.key];
-  });
+  // Find longest available plan (first non-full plan whose months <= mo)
+  var longest=null;
+  for(var i=0;i<ALL_PLANS.length;i++){
+    if(ALL_PLANS[i].key!=='full'&&ALL_PLANS[i].months<=mo){longest=ALL_PLANS[i];break;}
+  }
+  // Exactly: longest + 9 + 6 + full, no duplicates
+  var keys=[],seen={};
+  if(longest){keys.push(longest.key);seen[longest.key]=true;}
+  ['9','6','full'].forEach(function(k){if(!seen[k]){keys.push(k);seen[k]=true;}});
+  return ALL_PLANS.filter(function(p){return keys.indexOf(p.key)!==-1;});
 }
 
 function renderPlanGrid(){
