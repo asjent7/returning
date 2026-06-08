@@ -1588,15 +1588,31 @@ var checkoutOption='A'; // A=pay deposits now, B=pay everything July 1
     var depositF=parseFloat(deposit||'0');
     var monthlyF=parseFloat(monthly||'0');
     var monthsI=parseInt(months||'0',10);
-    var totalDeposits=existing+depositF;
-    var finalDate=new Date(2026,6+(monthsI-1),1);
-    var finalLabel=finalDate.toLocaleString('en-US',{month:'long',year:'numeric'});
+    var isRet=params.get('returning')==='1';
+    var coOpt=params.get('co')||'A';
     if(planLabel) document.getElementById('c-plan').textContent=decodeURIComponent(planLabel);
-    document.getElementById('c-paid-today').textContent='$'+depositF.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-    document.getElementById('c-deposit').textContent='$'+totalDeposits.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-    if(monthlyF>0&&monthsI>0) document.getElementById('c-monthly').textContent='$'+monthlyF.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+'/mo × '+monthsI+' months';
-    else document.getElementById('c-monthly').textContent='Paid in full';
-    document.getElementById('c-final').textContent=finalLabel;
+    var amtTodayEl=document.getElementById('c-amount-today');
+    var totalDepEl=document.getElementById('c-total-deposits');
+    var lastEl=document.getElementById('c-last');
+    if(amtTodayEl) amtTodayEl.textContent='$'+depositF.toFixed(2);
+    if(totalDepEl) totalDepEl.textContent='$'+(depositF+existing).toFixed(2);
+    if(monthly&&months&&months!=='0') document.getElementById('c-monthly').textContent='$'+monthlyF.toFixed(2)+'/mo × '+monthsI+' months';
+    else if(monthly==='0'||months==='0') document.getElementById('c-monthly').textContent='Paid in full';
+    if(lastEl&&monthlyF>0&&monthsI>0){
+      var lastDate=new Date(2026,6+(monthsI-1),1);
+      lastEl.textContent=lastDate.toLocaleString('en-US',{month:'long',year:'numeric'});
+    }
+    if(isRet){
+      var step2Title=document.getElementById('c-step2-title');
+      var step2Body=document.getElementById('c-step2-body');
+      if(coOpt==='A'){
+        if(step2Title) step2Title.textContent='Monthly payments begin July 1';
+        if(step2Body) step2Body.textContent='Your Stripe subscription is active. Monthly installments will be automatically charged to your card on the 1st of each month starting July 1, 2026.';
+      } else {
+        if(step2Title) step2Title.textContent='First payment July 1';
+        if(step2Body) step2Body.textContent='Your first payment of $'+monthlyF.toFixed(2)+' will be charged on July 1, 2026. Regular monthly installments follow on the 1st of each subsequent month.';
+      }
+    }
     return;
   }
 
