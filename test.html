@@ -972,7 +972,7 @@ function renderB(){
 function removeBMember(id){bMembers=bMembers.filter(function(m){return m.id!==id;});renderB();calcAndRender();}
 function setBMemberType(id,type){var m=bMembers.find(function(m){return m.id===id;});if(m)m.type=type;renderB();calcAndRender();}
 function setBMAir(id,v){var m=bMembers.find(function(m){return m.id===id;});if(m)m.airfare=v;calcAndRender();}
-function setBFullExp(mid){var m=bMembers.find(function(m){return m.id===mid;});if(m&&m.type==='occupant'){var pc=bMembers.filter(function(m){return m.type!=='occupant';}).length;if(pc>=3){alert('Family rooms are limited to 3 full experience participants.');return;}m.type='fan';}renderB();calcAndRender();}
+function setBFullExp(mid){var m=bMembers.find(function(m){return m.id===mid;});if(m&&m.type==='occupant'){m.type='fan';}renderB();calcAndRender();}
 function setBOccupant(mid){var others=bMembers.filter(function(m){return m.id!==mid;});if(!others.some(function(m){return m.type!=='occupant';})){alert('At least one family member must be a full experience participant.');return;}var m=bMembers.find(function(m){return m.id===mid;});if(m){m.type='occupant';m.airfare=false;}renderB();calcAndRender();}
 
 function addPrivateRoom(){cRooms.push({id:uid(),members:[{id:uid(),type:'performer',airfare:false}]});renderC();calcAndRender();}
