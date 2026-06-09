@@ -1334,6 +1334,14 @@ function buildStep2Forms(rooms){
       html+='<div class="g2"><div class="field"><label>First &amp; Last Name *</label><input type="text" id="det-name-'+m.id+'" value="'+(d.name||'')+'" placeholder="Full name" oninput="saveDet('+m.id+')"></div>';
       html+='<div class="field"><label>Email Address *</label><input type="email" id="det-email-'+m.id+'" value="'+(d.email||'')+'" placeholder="email@example.com" oninput="saveDet('+m.id+')"></div></div>';
       html+='<div class="field"><label>Phone Number *</label><input type="tel" id="det-phone-'+m.id+'" value="'+(d.phone||'')+'" placeholder="(555) 000-0000" oninput="saveDet('+m.id+')"></div>';
+      if(m.type==='performer'){
+        html+='<div class="g2">';
+        html+='<div class="field"><label>Gender</label><select id="det-gender-'+m.id+'" onchange="saveDet('+m.id+')"><option value="">Select...</option><option value="Male"'+(d.gender==='Male'?' selected':'')+'>Male</option><option value="Female"'+(d.gender==='Female'?' selected':'')+'>Female</option></select></div>';
+        html+='<div class="field"><label>Age Range</label><select id="det-agerange-'+m.id+'" onchange="saveDet('+m.id+')"><option value="">Select...</option>';
+        var ageRanges=['9–12','12–14','15–17','18–20','21+'];
+        for(var ai=0;ai<ageRanges.length;ai++){html+='<option value="'+ageRanges[ai]+'"'+(d.ageRange===ageRanges[ai]?' selected':'')+'>'+ageRanges[ai]+'</option>';}
+        html+='</select></div></div>';
+      }
       if(!isOcc){
         html+='<div class="field"><label>T-Shirt Size <span style="font-size:11px;color:var(--gold);font-weight:500">(included with your full paid experience package)</span></label><div class="shirt-grid">';
         var sizes=['YXS','YS','YM','YL','AS','AM','AL','AXL','A2XL'];
@@ -1379,6 +1387,8 @@ function saveDet(id){
   if(!details[id]) details[id]={};
   var n=document.getElementById('det-name-'+id),e=document.getElementById('det-email-'+id),p=document.getElementById('det-phone-'+id);
   if(n) details[id].name=n.value;if(e) details[id].email=e.value;if(p) details[id].phone=p.value;
+  var g=document.getElementById('det-gender-'+id),ar=document.getElementById('det-agerange-'+id);
+  if(g) details[id].gender=g.value;if(ar) details[id].ageRange=ar.value;
 }
 function setShirt(id,sz){
   if(!details[id]) details[id]={};
