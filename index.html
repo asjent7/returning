@@ -1246,6 +1246,9 @@ function calcAndRender(){
   if(plan!=='full'&&t.perfCount>0){
     var balAfterDep=Math.max(0,t.grand-existingDeposit);
     var moAfterDep=MOS[plan]>0?Math.round(balAfterDep/MOS[plan]*100)/100:0;
+    if(isReturning&&existingDeposit>0){
+      payRows+='<div class="r-row r-sub"><span class="rl" style="color:#81c784">Deposits Previously Paid</span><span class="rv" style="color:#81c784">−'+fmt(existingDeposit)+'</span></div>';
+    }
     payRows+='<div class="r-row r-total" style="margin-top:4px"><span class="rl" style="font-size:13px;color:var(--gold)">Balance after deposit</span><span class="rv" style="font-size:16px">'+fmt(balAfterDep)+'</span></div>';
     payRows+='<div class="r-row r-mo"><span class="rl">Monthly payment × '+MOS[plan]+' months</span><span class="rv">'+fmt(moAfterDep)+'/mo</span></div>';
   }
