@@ -615,7 +615,7 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
       <div style="font-size:24px;font-weight:700;color:var(--white);margin-bottom:6px">How are you traveling?</div>
       <div style="font-size:14px;color:var(--muted);max-width:420px;margin:0 auto">Choose the option that best fits your family.</div>
     </div>
-    <div class="scenario-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px">
+    <div class="scenario-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:28px">
       <div class="scenario-opt active" id="sc-a" onclick="setScenario('A')" style="padding:22px 18px">
         <div style="font-size:32px;margin-bottom:12px">🎭</div>
         <div style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px">Performer Only</div>
@@ -625,14 +625,8 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
       <div class="scenario-opt" id="sc-b" onclick="setScenario('B')" style="padding:22px 18px">
         <div style="font-size:32px;margin-bottom:12px">👨‍👩‍👧‍👦</div>
         <div style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px">Family Package</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:12px">One room, whole family together. Everyone fully included — meals, excursions, activities &amp; transportation.</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:12px">One room, whole family together. Additional family members can join the full experience or as hotel-only guests at $200/person.</div>
         <div class="s-tag">Experience it as a Family</div>
-      </div>
-      <div class="scenario-opt" id="sc-c" onclick="setScenario('C')" style="padding:22px 18px">
-        <div style="font-size:32px;margin-bottom:12px">🔑</div>
-        <div style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px">Performer + Hotel Only</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:12px">One full experience participant included. Extra family at $200 pp hotel rate only and does not include activities, meals or travel.</div>
-        <div class="s-tag">Best Value for Families</div>
       </div>
     </div>
     <div style="height:1px;background:var(--border);margin-bottom:28px"></div>
@@ -690,7 +684,7 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
 
     <!-- SCENARIO B -->
     <div id="scenario-b-block" style="display:none">
-      <div class="instr"><span style="font-size:22px;flex-shrink:0;margin-top:1px">📋</span><div style="font-size:13px;color:var(--text);line-height:1.65"><span class="instr-title">Family Package — Here's what to do</span>Add every family member in one room. Choose <strong style="color:var(--white)">Performer, Chaperone, or Fan/Audience</strong> for each person — everyone gets full experience access. Room type adjusts automatically (max 4). <strong style="color:var(--gold)">Airfare + Transfer Package can be added per person below.</strong></div></div>
+      <div class="instr"><span style="font-size:22px;flex-shrink:0;margin-top:1px">📋</span><div style="font-size:13px;color:var(--text);line-height:1.65"><span class="instr-title">Family Package — Here's what to do</span>Start with your primary participant. Additional family members can join as <strong style="color:var(--white)">full experience participants</strong> (Performer, Chaperone, or Fan) or as <strong style="color:var(--white)">hotel-only guests at $200/person</strong>. Room type adjusts automatically based on paid participants (max 4 total). <strong style="color:var(--gold)">Airfare + Transfer Package can be added per person below.</strong></div></div>
       <div class="day-card open" id="acc-b-1" style="border:1.5px solid var(--gold-border);background:var(--black2)">
         <button class="day-header" onclick="toggleDay('acc-b-1')" style="padding:20px 22px;background:linear-gradient(135deg,rgba(255,183,46,.18),rgba(255,183,46,.08))">
           <div class="day-num" style="background:var(--gold);color:var(--black);border-color:var(--gold);width:36px;height:36px">1</div>
@@ -704,21 +698,6 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
       </div>
     </div>
 
-    <!-- SCENARIO C -->
-    <div id="scenario-c-block" style="display:none">
-      <div class="instr"><span style="font-size:22px;flex-shrink:0;margin-top:1px">📋</span><div style="font-size:13px;color:var(--text);line-height:1.65"><span class="instr-title">Family + Private Room — Here's what to do</span>Start with your <strong style="color:var(--white)">primary experience participant</strong> (Person 1). Additional family members default to <strong style="color:var(--white)">Room Occupant ($200 — hotel only)</strong> but can be upgraded. Pricing adjusts automatically (max 3 paid). A second room can be added below. <strong style="color:var(--gold)">Airfare + Transfer Package can be added per person below.</strong></div></div>
-      <div class="day-card open" id="acc-c-1" style="border:1.5px solid var(--gold-border);background:var(--black2)">
-        <button class="day-header" onclick="toggleDay('acc-c-1')" style="padding:20px 22px;background:linear-gradient(135deg,rgba(255,183,46,.18),rgba(255,183,46,.08))">
-          <div class="day-num" style="background:var(--gold);color:var(--black);border-color:var(--gold);width:36px;height:36px">1</div>
-          <div style="display:flex;align-items:center;gap:12px;flex:1"><span style="font-size:26px">🔑</span><div><div style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:3px">Private Room — Build your room</div><div style="font-size:12px;color:var(--muted);line-height:1.5">Pricing adjusts automatically based on paid participants</div></div></div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0"><span style="font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.06em">Required</span><span class="day-chevron" style="font-size:22px">&#8964;</span></div>
-        </button>
-        <div class="day-body" style="padding:20px 22px">
-          <div id="c-rooms-block"></div>
-          <div id="add-private-room-wrap"></div>
-        </div>
-      </div>
-    </div>
 
     <!-- Payment Plan -->
     <div class="card" style="margin-top:14px">
@@ -968,25 +947,33 @@ function addParticipant(sc){
 function renderB(){
   var el=document.getElementById('b-participants-block');
   if(!el) return;
-  var occ=autoRoomKey(bMembers.length);
+  var paidCount=bMembers.filter(function(m){return m.type!=='occupant';}).length;
+  var occ=autoRoomKey(Math.max(1,paidCount));
   var html='<div style="font-size:12px;color:var(--muted);margin-bottom:12px">Room type auto-assigned: <strong style="color:var(--white)">'+roomLabel(occ)+'</strong></div>';
+  var types=['performer','chaperone','fan'];
   for(var i=0;i<bMembers.length;i++){
     var m=bMembers[i];
-    html+='<div class="room-block" style="margin-bottom:10px"><div class="room-block-hdr"><span style="font-size:11px;font-weight:600;color:var(--dim)">Member '+(i+1)+'</span><div style="display:flex;align-items:center;gap:8px"><span class="pbadge '+typeCls(m.type)+'">'+typeLabel(m.type)+'</span>';
+    html+='<div class="room-block" style="margin-bottom:10px"><div class="room-block-hdr"><span style="font-size:11px;font-weight:600;color:var(--dim)">Member '+(i+1)+(i===0?' (Primary)':'')+'</span><div style="display:flex;align-items:center;gap:8px"><span class="pbadge '+typeCls(m.type)+'">'+typeLabel(m.type)+'</span>';
     if(i>0) html+='<button class="rm-btn" onclick="removeBMember('+m.id+')">&#215;</button>';
-    html+='</div></div><div class="room-block-body"><div class="type-toggle">';
-    var types=['performer','chaperone','fan'];
-    for(var ti=0;ti<types.length;ti++){
-      var t=types[ti];
-      html+='<button class="tt-btn'+(m.type===t?' active':'')+'" onclick="setBMemberType('+m.id+',\''+t+'\')">'+typeLabel(t)+'</button>';
+    html+='</div></div><div class="room-block-body">';
+    if(i===0){
+      html+='<div class="type-toggle">';
+      for(var ti=0;ti<types.length;ti++){var t=types[ti];html+='<button class="tt-btn'+(m.type===t?' active':'')+'" onclick="setBMemberType('+m.id+',\''+t+'\')">'+typeLabel(t)+'</button>';}
+      html+='</div>';
+    } else {
+      html+='<div class="type-toggle"><button class="tt-btn'+(m.type!=='occupant'?' active':'')+'" onclick="setBFullExp('+m.id+')">Full Experience</button><button class="tt-btn'+(m.type==='occupant'?' active':'')+'" onclick="setBOccupant('+m.id+')">Room Occupant — $200</button></div>';
+      if(m.type!=='occupant'){html+='<div class="type-toggle" style="margin-top:6px">';for(var ti2=0;ti2<types.length;ti2++){var t2=types[ti2];html+='<button class="tt-btn'+(m.type===t2?' active':'')+'" onclick="setBMemberType('+m.id+',\''+t2+'\')">'+typeLabel(t2)+'</button>';}html+='</div>';}
     }
-    html+='</div><label class="air-row" for="air-bm-'+m.id+'"><input type="checkbox" id="air-bm-'+m.id+'" '+(m.airfare?'checked':'')+' onchange="setBMAir('+m.id+',this.checked)"><div class="air-info"><div class="air-title">Airfare &amp; Transfer Package</div><div class="air-desc">Round-trip airfare + airport transfer to/from hotel</div></div><div class="air-price">+$525</div></label></div></div>';
+    if(m.type!=='occupant') html+='<label class="air-row" for="air-bm-'+m.id+'"><input type="checkbox" id="air-bm-'+m.id+'" '+(m.airfare?'checked':'')+' onchange="setBMAir('+m.id+',this.checked)"><div class="air-info"><div class="air-title">Airfare &amp; Transfer Package</div><div class="air-desc">Round-trip airfare + airport transfer to/from hotel</div></div><div class="air-price">+$525</div></label>';
+    html+='</div></div>';
   }
   el.innerHTML=html;
 }
 function removeBMember(id){bMembers=bMembers.filter(function(m){return m.id!==id;});renderB();calcAndRender();}
 function setBMemberType(id,type){var m=bMembers.find(function(m){return m.id===id;});if(m)m.type=type;renderB();calcAndRender();}
 function setBMAir(id,v){var m=bMembers.find(function(m){return m.id===id;});if(m)m.airfare=v;calcAndRender();}
+function setBFullExp(mid){var m=bMembers.find(function(m){return m.id===mid;});if(m&&m.type==='occupant'){var pc=bMembers.filter(function(m){return m.type!=='occupant';}).length;if(pc>=3){alert('Family rooms are limited to 3 full experience participants.');return;}m.type='fan';}renderB();calcAndRender();}
+function setBOccupant(mid){var others=bMembers.filter(function(m){return m.id!==mid;});if(!others.some(function(m){return m.type!=='occupant';})){alert('At least one family member must be a full experience participant.');return;}var m=bMembers.find(function(m){return m.id===mid;});if(m){m.type='occupant';m.airfare=false;}renderB();calcAndRender();}
 
 function addPrivateRoom(){cRooms.push({id:uid(),members:[{id:uid(),type:'performer',airfare:false}]});renderC();calcAndRender();}
 function renderC(){
@@ -1153,7 +1140,8 @@ function buildRoomSummaries(){
     }
   }
   if(scenario==='B'){
-    var rk2=autoRoomKey(bMembers.length);var bb=0,ba=0;
+    var bpc=bMembers.filter(function(m){return m.type!=='occupant';}).length;
+    var rk2=autoRoomKey(Math.max(1,bpc));var bb=0,ba=0;
     var bm=bMembers.map(function(m){var p=participantPrice(rk2,m.type);bb+=p;if(m.airfare)ba+=AIRFARE;return{id:m.id,type:m.type,roomKey:rk2,price:p,airfare:m.airfare};});
     rooms.push({label:'Family Room · '+roomLabel(rk2),members:bm,base:bb,air:ba,total:bb+ba});
   }
@@ -1266,8 +1254,6 @@ function updateSavingNudge(){
   if(!el){setTimeout(updateSavingNudge,100);return;}
   if(scenario==='A'){
     el.innerHTML='<div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 16px;background:var(--black2);border:1px solid var(--gold-border);border-radius:var(--rs);margin-bottom:4px"><span style="font-size:16px">💡</span><span style="font-size:12px;color:var(--muted)">Want more savings?</span><button onclick="switchToScenario(\'B\')" style="font-size:12px;font-weight:600;color:var(--gold);background:none;border:none;cursor:pointer;padding:0;font-family:var(--sf)">Try the Family Package option →</button></div>';
-  } else if(scenario==='B'){
-    el.innerHTML='<div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 16px;background:var(--black2);border:1px solid var(--gold-border);border-radius:var(--rs);margin-bottom:4px"><span style="font-size:16px">💡</span><span style="font-size:12px;color:var(--muted)">Want your own room?</span><button onclick="switchToScenario(\'C\')" style="font-size:12px;font-weight:600;color:var(--gold);background:none;border:none;cursor:pointer;padding:0;font-family:var(--sf)">Try the Family + Private Room option →</button></div>';
   } else {
     el.innerHTML='';
   }
