@@ -563,9 +563,12 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
     </div>
   </div>
   <div style="margin-top:24px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
-    <button onclick="var b=this,d=document.getElementById('ex-calc');var open=d.style.display==='block';d.style.display=open?'none':'block';b.querySelector('.ex-arrow').textContent=open?'▼':'▲';" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:var(--black2);border:none;cursor:pointer;font-family:var(--sf)">
-      <span style="font-size:13px;font-weight:600;color:var(--gold)">See example calculation</span>
-      <span class="ex-arrow" style="font-size:11px;color:var(--gold)">▼</span>
+    <button onclick="var b=this,d=document.getElementById('ex-calc');var open=d.style.display==='block';d.style.display=open?'none':'block';b.querySelector('.ex-arrow').textContent=open?'▼':'▲';" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--black2);border:none;cursor:pointer;font-family:var(--sf);text-align:left">
+      <div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:4px">See example calculation</div>
+        <div style="font-size:15px;font-weight:700;color:var(--white)">From an estimated $200 to $280 per month for performers</div>
+      </div>
+      <span class="ex-arrow" style="font-size:11px;color:var(--gold);flex-shrink:0;margin-left:12px">▼</span>
     </button>
     <div id="ex-calc" style="display:none;padding:16px;background:var(--black3);border-top:1px solid var(--border)">
       <div style="font-size:12px;font-weight:700;color:var(--white);margin-bottom:12px">Example Monthly Estimate — Performer Only, Quad Room (4/room)</div>
