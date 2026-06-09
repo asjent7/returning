@@ -562,15 +562,11 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
     </div>
     </div>
   </div>
-  <div style="margin-top:24px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
-    <button onclick="var b=this,d=document.getElementById('ex-calc');var open=d.style.display==='block';d.style.display=open?'none':'block';b.querySelector('.ex-arrow').textContent=open?'▼':'▲';" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--black2);border:none;cursor:pointer;font-family:var(--sf);text-align:left">
-      <div>
-        <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:4px">See example calculation</div>
-        <div style="font-size:15px;font-weight:700;color:var(--white)">From an estimated $200 to $280 per month for performers</div>
-      </div>
-      <span class="ex-arrow" style="font-size:11px;color:var(--gold);flex-shrink:0;margin-left:12px">▼</span>
-    </button>
-    <div id="ex-calc" style="display:none;padding:16px;background:var(--black3);border-top:1px solid var(--border)">
+  <hr style="border:none;border-top:1px solid var(--border);margin:28px 0">
+  <div style="font-size:16px;font-weight:700;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="var(--gold)"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>See Example Calculation</div>
+  <div class="day-card" id="ex-calc-card">
+    <button class="day-header" onclick="toggleDay('ex-calc-card')" style="padding:14px 20px"><div class="day-info"><div class="day-title">From an estimated $200 to $280 per month for performers</div><div class="day-date">Tap to expand</div></div><span class="day-chevron">&#8964;</span></button>
+    <div class="day-body" style="padding:16px 20px 20px">
       <div style="font-size:12px;font-weight:700;color:var(--white);margin-bottom:12px">Example Monthly Estimate — Performer Only, Quad Room (4/room)</div>
       <div style="display:flex;flex-direction:column;gap:6px;font-size:13px">
         <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Base travel cost</span><span style="color:var(--white)">$2,750</span></div>
@@ -582,6 +578,7 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
       </div>
       <div style="margin-top:12px;font-size:11px;color:var(--dim);line-height:1.55">Final pricing varies by room type, occupancy, and payment plan selected. This example is for reference only.</div>
     </div>
+  </div>
   </div>
   <div style="text-align:center;margin-top:28px">
     <button class="reg-btn" onclick="switchTab('registration');setTimeout(function(){var el=document.getElementById('register-section');if(el)el.scrollIntoView({behavior:'smooth'});},120)">Ready to Register →</button>
