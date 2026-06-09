@@ -562,6 +562,24 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
     </div>
     </div>
   </div>
+  <div style="margin-top:24px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
+    <button onclick="var b=this,d=document.getElementById('ex-calc');var open=d.style.display==='block';d.style.display=open?'none':'block';b.querySelector('.ex-arrow').textContent=open?'▼':'▲';" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:var(--black2);border:none;cursor:pointer;font-family:var(--sf)">
+      <span style="font-size:13px;font-weight:600;color:var(--gold)">See example calculation</span>
+      <span class="ex-arrow" style="font-size:11px;color:var(--gold)">▼</span>
+    </button>
+    <div id="ex-calc" style="display:none;padding:16px;background:var(--black3);border-top:1px solid var(--border)">
+      <div style="font-size:12px;font-weight:700;color:var(--white);margin-bottom:12px">Example Monthly Estimate — Performer Only, Quad Room (4/room)</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:13px">
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Base travel cost</span><span style="color:var(--white)">$2,750</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Experience fee</span><span style="color:var(--white)">+$900</span></div>
+        <div style="display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid var(--border)"><span style="color:var(--white);font-weight:600">Total</span><span style="color:var(--white);font-weight:600">$3,650</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">After $500 deposit</span><span style="color:var(--white)">$3,150</span></div>
+        <div style="display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid var(--border)"><span style="color:var(--muted)">12-month plan</span><span style="color:var(--gold);font-weight:600">$262/mo</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">15-month plan</span><span style="color:var(--gold);font-weight:600">$210/mo</span></div>
+      </div>
+      <div style="margin-top:12px;font-size:11px;color:var(--dim);line-height:1.55">Final pricing varies by room type, occupancy, and payment plan selected. This example is for reference only.</div>
+    </div>
+  </div>
   <div style="text-align:center;margin-top:28px">
     <button class="reg-btn" onclick="switchTab('registration');setTimeout(function(){var el=document.getElementById('register-section');if(el)el.scrollIntoView({behavior:'smooth'});},120)">Ready to Register →</button>
   </div>
