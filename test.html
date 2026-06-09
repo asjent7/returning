@@ -961,7 +961,7 @@ function renderB(){
       for(var ti=0;ti<types.length;ti++){var t=types[ti];html+='<button class="tt-btn'+(m.type===t?' active':'')+'" onclick="setBMemberType('+m.id+',\''+t+'\')">'+typeLabel(t)+'</button>';}
       html+='</div>';
     } else {
-      html+='<div class="type-toggle"><button class="tt-btn'+(m.type!=='occupant'?' active':'')+'" onclick="setBFullExp('+m.id+')">Full Experience</button><button class="tt-btn'+(m.type==='occupant'?' active':'')+'" onclick="setBOccupant('+m.id+')">Room Occupant — $200</button></div>';
+      html+='<div class="type-toggle"><button class="tt-btn'+(m.type!=='occupant'?' active':'')+'" onclick="setBFullExp('+m.id+')">Full Experience</button><button class="tt-btn'+(m.type==='occupant'?' active':'')+'" onclick="setBOccupant('+m.id+')">Room Occupant (Hotel Only) — $200</button></div>';
       if(m.type!=='occupant'){html+='<div class="type-toggle" style="margin-top:6px">';for(var ti2=0;ti2<types.length;ti2++){var t2=types[ti2];html+='<button class="tt-btn'+(m.type===t2?' active':'')+'" onclick="setBMemberType('+m.id+',\''+t2+'\')">'+typeLabel(t2)+'</button>';}html+='</div>';}
     }
     if(m.type!=='occupant') html+='<label class="air-row" for="air-bm-'+m.id+'"><input type="checkbox" id="air-bm-'+m.id+'" '+(m.airfare?'checked':'')+' onchange="setBMAir('+m.id+',this.checked)"><div class="air-info"><div class="air-title">Airfare &amp; Transfer Package</div><div class="air-desc">Round-trip airfare + airport transfer to/from hotel</div></div><div class="air-price">+$525</div></label>';
@@ -1012,7 +1012,7 @@ function buildPrivateRoomHTML(r,ri){
       for(var ti=0;ti<types.length;ti++){var t=types[ti];html+='<button class="tt-btn'+(m.type===t?' active':'')+'" onclick="setCMemberType('+r.id+','+m.id+',\''+t+'\')">'+typeLabel(t)+'</button>';}
       html+='</div>';
     } else {
-      html+='<div class="type-toggle"><button class="tt-btn'+(m.type!=='occupant'?' active':'')+'" onclick="setCFullExp('+r.id+','+m.id+')">Full Experience</button><button class="tt-btn'+(m.type==='occupant'?' active':'')+'" onclick="setCOccupant('+r.id+','+m.id+')">Room Occupant — $200</button></div>';
+      html+='<div class="type-toggle"><button class="tt-btn'+(m.type!=='occupant'?' active':'')+'" onclick="setCFullExp('+r.id+','+m.id+')">Full Experience</button><button class="tt-btn'+(m.type==='occupant'?' active':'')+'" onclick="setCOccupant('+r.id+','+m.id+')">Room Occupant (Hotel Only) — $200</button></div>';
       if(m.type!=='occupant'){
         html+='<div class="type-toggle" style="margin-top:6px">';
         for(var ti2=0;ti2<types.length;ti2++){var t2=types[ti2];html+='<button class="tt-btn'+(m.type===t2?' active':'')+'" onclick="setCMemberType('+r.id+','+m.id+',\''+t2+'\')">'+typeLabel(t2)+'</button>';}
