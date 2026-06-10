@@ -416,6 +416,7 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
     <button class="tab" id="tab-itinerary" onclick="switchTab('itinerary')">Itinerary</button>
     <button class="tab" id="tab-pricing" onclick="switchTab('pricing')">Pricing</button>
     <button class="tab" id="tab-registration" onclick="switchTab('registration')">Registration</button>
+    <button class="tab" id="tab-faq" onclick="switchTab('faq')">FAQ</button>
   </div>
 </div>
 
@@ -724,6 +725,76 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
   </div>
 </div><!-- /panel-registration -->
 
+<!-- FAQ -->
+<div class="tab-panel" id="panel-faq">
+<div style="max-width:860px;margin:0 auto;padding:36px 28px 64px">
+  <div style="font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:8px">FAQ</div>
+  <div style="font-size:24px;font-weight:700;color:var(--white);margin-bottom:6px">Frequently Asked Questions</div>
+  <div style="font-size:14px;color:var(--muted);margin-bottom:28px">Everything you need to know about ADX Broadway 2027.</div>
+
+  <div style="border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden" id="faq-1">
+    <button onclick="toggleFaq('faq-1')" style="width:100%;text-align:left;padding:18px 20px;background:var(--black2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:var(--sf)">
+      <span style="font-size:14px;font-weight:600;color:var(--white);line-height:1.4">Will the performance be recorded if parents are unable to attend?</span>
+      <span id="faq-1-icon" style="font-size:20px;color:var(--gold);flex-shrink:0;transition:transform .2s">&#8964;</span>
+    </button>
+    <div id="faq-1-body" style="display:none;padding:16px 20px 20px;background:var(--black3);border-top:1px solid var(--border)">
+      <p style="font-size:13px;color:var(--text);line-height:1.7;margin:0 0 10px">Yes. As part of your experience package, participants will receive access to a media gallery that includes:</p>
+      <ul style="font-size:13px;color:var(--text);line-height:1.7;margin:0 0 10px;padding-left:20px">
+        <li>Video of our group's performance</li>
+        <li>Event photos featuring participants throughout the experience</li>
+        <li>Downloadable content you can share with family and friends</li>
+      </ul>
+      <p style="font-size:13px;color:var(--text);line-height:1.7;margin:0">This allows families and supporters to enjoy the experience even if they are unable to travel to New York.</p>
+    </div>
+  </div>
+
+  <div style="border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden" id="faq-2">
+    <button onclick="toggleFaq('faq-2')" style="width:100%;text-align:left;padding:18px 20px;background:var(--black2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:var(--sf)">
+      <span style="font-size:14px;font-weight:600;color:var(--white);line-height:1.4">Can I purchase tickets to the Arts for Autism Benefit Concert without participating in the full experience?</span>
+      <span id="faq-2-icon" style="font-size:20px;color:var(--gold);flex-shrink:0;transition:transform .2s">&#8964;</span>
+    </button>
+    <div id="faq-2-body" style="display:none;padding:16px 20px 20px;background:var(--black3);border-top:1px solid var(--border)">
+      <p style="font-size:13px;color:var(--text);line-height:1.7;margin:0 0 10px">Yes. The Arts for Autism Benefit Concert is open to the public, and tickets are typically released in March for the June performance. Once tickets become available, ADX Academy will notify participants and families and provide a direct link to the box office.</p>
+      <p style="font-size:13px;color:var(--text);line-height:1.7;margin:0 0 10px">Parents and family who participate in the experience are guaranteed a ticket to the show.</p>
+      <p style="font-size:13px;color:var(--gold);font-weight:500;line-height:1.7;margin:0">Please note: This event often sells out. We strongly recommend purchasing tickets as early as possible to secure the best available seating.</p>
+    </div>
+  </div>
+
+  <div style="border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden" id="faq-3">
+    <button onclick="toggleFaq('faq-3')" style="width:100%;text-align:left;padding:18px 20px;background:var(--black2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:var(--sf)">
+      <span style="font-size:14px;font-weight:600;color:var(--white);line-height:1.4">Can performers or family members arrive early, stay longer, or arrange their own travel plans?</span>
+      <span id="faq-3-icon" style="font-size:20px;color:var(--gold);flex-shrink:0;transition:transform .2s">&#8964;</span>
+    </button>
+    <div id="faq-3-body" style="display:none;padding:16px 20px 20px;background:var(--black3);border-top:1px solid var(--border)">
+      <p style="font-size:13px;color:var(--text);line-height:1.7;margin:0 0 10px">Yes. Families are welcome to extend their stay in New York before or after the official ADX Academy experience. If you choose to make your own travel arrangements, we recommend not purchasing the Airfare + Airport Transfer Add-On, as those services are designed specifically for participants traveling with the group on the scheduled itinerary.</p>
+      <p style="font-size:13px;font-weight:600;color:var(--white);line-height:1.7;margin:0 0 6px">Please keep in mind:</p>
+      <ul style="font-size:13px;color:var(--text);line-height:1.7;margin:0;padding-left:20px">
+        <li>Participants must check in with the group at the designated time.</li>
+        <li>Performers are required to stay with the group and in assigned group accommodations during the official experience.</li>
+        <li>Participants will be officially released at the conclusion of the program, after which families may continue their personal travel plans.</li>
+        <li>Any transportation, lodging, or activities outside the official ADX Academy itinerary are the responsibility of the participant and their family.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden" id="faq-4">
+    <button onclick="toggleFaq('faq-4')" style="width:100%;text-align:left;padding:18px 20px;background:var(--black2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:var(--sf)">
+      <span style="font-size:14px;font-weight:600;color:var(--white);line-height:1.4">How are roommate requests handled?</span>
+      <span id="faq-4-icon" style="font-size:20px;color:var(--gold);flex-shrink:0;transition:transform .2s">&#8964;</span>
+    </button>
+    <div id="faq-4-body" style="display:none;padding:16px 20px 20px;background:var(--black3);border-top:1px solid var(--border)">
+      <p style="font-size:13px;color:var(--text);line-height:1.7;margin:0 0 10px">We strongly encourage performers to discuss and confirm roommate preferences before registering. Roommate requests should be coordinated in advance whenever possible.</p>
+      <p style="font-size:13px;color:var(--text);line-height:1.7;margin:0 0 10px">Your director will have access to rooming assignments and can help place performers based on submitted requests. Changes to room assignments after final rooming lists are created may result in additional administrative or hotel-related fees.</p>
+      <p style="font-size:13px;color:var(--gold);font-weight:500;line-height:1.7;margin:0">Not sure who your roommates will be yet? We recommend selecting Triple Occupancy during registration. If your plans change later, we can often adjust your room type and either upgrade accommodations or refund the difference, depending on availability.</p>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:36px">
+    <a href="mailto:ADX@adamsdavy.com" style="display:inline-block;padding:14px 28px;border:2px solid #E5B824;color:#E5B824;border-radius:8px;font-size:15px;text-decoration:none;font-weight:500">Contact the ADX Academy Team</a>
+  </div>
+</div>
+</div><!-- /panel-faq -->
+
 <!-- MODAL -->
 <div class="modal-bd" id="modal" onclick="handleBdClick(event)">
   <div class="modal" id="modal-inner">
@@ -761,7 +832,7 @@ function typeCls(t){var m={performer:'pb-perf',chaperone:'pb-chap',fan:'pb-fan',
 function formNumCls(t){var m={performer:'perf',chaperone:'chap',fan:'fan',occupant:'occ'};return m[t]||'occ';}
 
 function switchTab(id){
-  var tabs=['includes','itinerary','pricing','registration'];
+  var tabs=['includes','itinerary','pricing','registration','faq'];
   for(var i=0;i<tabs.length;i++){
     var t=tabs[i];
     var tab=document.getElementById('tab-'+t);
@@ -775,6 +846,14 @@ function switchTab(id){
 function toggleDay(id){
   var card=document.getElementById(id);
   if(card) card.classList.toggle('open');
+}
+function toggleFaq(id){
+  var body=document.getElementById(id+'-body');
+  var icon=document.getElementById(id+'-icon');
+  if(!body) return;
+  var open=body.style.display==='block';
+  body.style.display=open?'none':'block';
+  if(icon) icon.style.transform=open?'':'rotate(180deg)';
 }
 
 function setScenario(s){
