@@ -1568,8 +1568,8 @@ function buildStep2Forms(rooms){
       html+='<div class="field"><label>Phone Number *</label><input type="tel" id="det-phone-'+m.id+'" value="'+(d.phone||'')+'" placeholder="(555) 000-0000" oninput="saveDet('+m.id+')"></div>';
       if(m.type==='performer'){
         html+='<div class="g2">';
-        html+='<div class="field"><label>Gender</label><select id="det-gender-'+m.id+'" onchange="saveDet('+m.id+')"><option value="">Select...</option><option value="Male"'+(d.gender==='Male'?' selected':'')+'>Male</option><option value="Female"'+(d.gender==='Female'?' selected':'')+'>Female</option></select></div>';
-        html+='<div class="field"><label>Age Range</label><select id="det-agerange-'+m.id+'" onchange="saveDet('+m.id+')"><option value="">Select...</option>';
+        html+='<div class="field"><label>Gender <span style="color:#e53e3e">*</span></label><select id="det-gender-'+m.id+'" onchange="saveDet('+m.id+')" required><option value="">Select...</option><option value="Male"'+(d.gender==='Male'?' selected':'')+'>Male</option><option value="Female"'+(d.gender==='Female'?' selected':'')+'>Female</option></select></div>';
+        html+='<div class="field"><label>Age Range <span style="color:#e53e3e">*</span></label><select id="det-agerange-'+m.id+'" onchange="saveDet('+m.id+')" required><option value="">Select...</option>';
         var ageRanges=['9–12','12–14','15–17','18–20','21+'];
         for(var ai=0;ai<ageRanges.length;ai++){html+='<option value="'+ageRanges[ai]+'"'+(d.ageRange===ageRanges[ai]?' selected':'')+'>'+ageRanges[ai]+'</option>';}
         html+='</select></div></div>';
