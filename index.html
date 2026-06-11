@@ -658,8 +658,8 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
           </div>
           <div style="height:1px;background:var(--border)"></div>
           <div>
-            <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">Number of performing students <span class="day-chevron" style="font-size:14px;">&#8964;</span></div>
-            <div class="field" style="margin-bottom:0"><select id="multi-student-select" onchange="handleMultiStudent()"><option value="1">1 student</option><option value="2">2 students</option><option value="3">3 students</option><option value="4">4 students</option></select></div>
+            <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Number of performing students</div>
+            <div class="field" style="margin-bottom:0"><div style="position:relative;display:block;"><select id="multi-student-select" onchange="handleMultiStudent()" style="appearance:none;-webkit-appearance:none;padding-right:36px;width:100%;"><option value="1">1 student</option><option value="2">2 students</option><option value="3">3 students</option><option value="4">4 students</option></select><span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#E5B824;font-size:13px;pointer-events:none;font-weight:700;">▼</span></div></div>
           </div>
           <div id="a-participants-block"></div>
         </div>
