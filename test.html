@@ -646,9 +646,9 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
           <div>
             <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Room occupancy</div>
             <div class="occ-grid">
-              <div class="occ-opt" id="occ-quad" onclick="setOcc('quad')"><div class="occ-name">Quad</div><div class="occ-sub">4 per room</div></div>
-              <div class="occ-opt" id="occ-triple" onclick="setOcc('triple')"><div class="occ-name">Triple</div><div class="occ-sub">3 per room</div></div>
-              <div class="occ-opt" id="occ-double" onclick="setOcc('double')"><div class="occ-name">Double</div><div class="occ-sub">2 per room</div></div>
+              <div class="occ-opt" id="occ-quad" onclick="setOcc('quad')"><div class="occ-name">Quad</div><div class="occ-sub">4 per room/2 beds</div></div>
+              <div class="occ-opt" id="occ-triple" onclick="setOcc('triple')"><div class="occ-name">Triple</div><div class="occ-sub">3 per room/2 beds</div></div>
+              <div class="occ-opt" id="occ-double" onclick="setOcc('double')"><div class="occ-name">Double</div><div class="occ-sub">2 per room/2 beds</div></div>
               <div class="occ-opt disabled"><div class="occ-name">Single</div><div class="occ-sub">N/A for group</div></div>
             </div>
           </div>
@@ -659,7 +659,7 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
           </div>
           <div style="height:1px;background:var(--border)"></div>
           <div>
-            <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Number of performing students</div>
+            <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">Number of performing students <span class="day-chevron" style="font-size:14px;">&#8964;</span></div>
             <div class="field" style="margin-bottom:0"><select id="multi-student-select" onchange="handleMultiStudent()"><option value="1">1 student</option><option value="2">2 students</option><option value="3">3 students</option><option value="4">4 students</option></select></div>
           </div>
           <div id="a-participants-block"></div>

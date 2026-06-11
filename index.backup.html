@@ -622,7 +622,7 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
         <div class="s-tag">Performer Independence</div>
       </div>
       <div class="scenario-opt" id="sc-b" onclick="setScenario('B')" style="padding:22px 18px">
-        <div style="font-size:32px;margin-bottom:12px">👨‍👩‍👧‍👦</div>
+        <div style="font-size:32px;margin-bottom:12px"><i class="ti ti-users" aria-hidden="true"></i></div>
         <div style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px">Family Package</div>
         <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:12px">One room, whole family together. Additional family members can join the full experience or as hotel-only room guests at $200/person.</div>
         <div class="s-tag">Experience it as a Family</div>
@@ -645,20 +645,20 @@ body{background:#0a0a0a!important;color:rgba(255,255,255,.92)!important;-webkit-
           <div>
             <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Room occupancy</div>
             <div class="occ-grid">
-              <div class="occ-opt" id="occ-quad" onclick="setOcc('quad')"><div class="occ-name">Quad</div><div class="occ-sub">4 per room/2 beds</div></div>
-              <div class="occ-opt" id="occ-triple" onclick="setOcc('triple')"><div class="occ-name">Triple</div><div class="occ-sub">3 per room/2 beds</div></div>
-              <div class="occ-opt" id="occ-double" onclick="setOcc('double')"><div class="occ-name">Double</div><div class="occ-sub">2 per room/2 beds</div></div>
+              <div class="occ-opt" id="occ-quad" onclick="setOcc('quad')"><div class="occ-name">Quad</div><div class="occ-sub">4 per room</div></div>
+              <div class="occ-opt" id="occ-triple" onclick="setOcc('triple')"><div class="occ-name">Triple</div><div class="occ-sub">3 per room</div></div>
+              <div class="occ-opt" id="occ-double" onclick="setOcc('double')"><div class="occ-name">Double</div><div class="occ-sub">2 per room</div></div>
               <div class="occ-opt disabled"><div class="occ-name">Single</div><div class="occ-sub">N/A for group</div></div>
             </div>
           </div>
           <div style="height:1px;background:var(--border)"></div>
           <div style="display:flex;align-items:flex-start;gap:12px;padding:14px;background:var(--black3);border-radius:var(--rs)">
             <span style="font-size:20px;flex-shrink:0">💬</span>
-            <div style="font-size:12px;color:var(--muted);line-height:1.65"><strong style="color:var(--white);display:block;margin-bottom:4px">PERFORMER ONLY ROOMMATE GUARANTEE</strong>Most performers register individually and do not have roommates selected at the time of registration.<br><br>When you select a Double, Triple, or Quad occupancy option, ADX Academy will actively assist in matching your performer with age-appropriate roommates from your group only.<br><br>If ADX Academy is unable to fulfill your selected occupancy level, we will contact you before any changes are made and discuss available options. You will never be surprised by additional room charges without prior communication.<br><br>Our goal is to ensure every performer has a safe, comfortable, and enjoyable roommate experience.</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.65"><strong style="color:var(--white);display:block;margin-bottom:4px">Coordinate with other students first</strong>Please confirm your rooming plans with other students before selecting. Uncoordinated selections can cause additional fees or rooming list changes.<span style="color:var(--gold);font-weight:500;display:block;margin-top:6px">Not sure yet? Choose Triple — we can upgrade or refund the difference if plans change.</span></div>
           </div>
           <div style="height:1px;background:var(--border)"></div>
           <div>
-            <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">Number of performing students <span class="day-chevron" style="font-size:14px;">&#8964;</span></div>
+            <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Number of performing students</div>
             <div class="field" style="margin-bottom:0"><select id="multi-student-select" onchange="handleMultiStudent()"><option value="1">1 student</option><option value="2">2 students</option><option value="3">3 students</option><option value="4">4 students</option></select></div>
           </div>
           <div id="a-participants-block"></div>
