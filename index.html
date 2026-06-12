@@ -1644,6 +1644,7 @@ function validateStep2(){
     if(!d.phone||!d.phone.trim()){alert('Please enter a phone number for '+(d.name||'a participant')+'.');return false;}
     if(m.type!=='occupant'&&!d.shirt){alert('Please select a t-shirt size for '+(d.name||'a participant')+'.');return false;}
     if(m.type==='occupant'&&d.shirtAddon&&!d.shirt){alert('Please select a t-shirt size for '+(d.name||'a participant')+'.');return false;}
+    if(!d.gender||!d.ageRange){alert('Please select a gender and age range for all participants.');return false;}
   }
   return true;
 }
